@@ -49,3 +49,55 @@ export const insights = sqliteTable("insights", {
   nicheIds: text("niche_ids").notNull(),
   countryCodes: text("country_codes").notNull(),
 });
+
+export const appSettings = sqliteTable("app_settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull().default(""),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export const trendRuns = sqliteTable("trend_runs", {
+  id: text("id").primaryKey(),
+  query: text("query").notNull(),
+  country: text("country").notNull(),
+  provider: text("provider").notNull(),
+  timeframe: text("timeframe").notNull(),
+  status: text("status").notNull(),
+  error: text("error"),
+  avgInterest: real("avg_interest"),
+  peakInterest: real("peak_interest"),
+  trendDirection: text("trend_direction"),
+  insightJson: text("insight_json"),
+  createdAt: text("created_at").notNull(),
+});
+
+export const trendPoints = sqliteTable("trend_points", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  runId: text("run_id")
+    .notNull()
+    .references(() => trendRuns.id),
+  date: text("date").notNull(),
+  interest: integer("interest").notNull(),
+});
+
+export const trendRelated = sqliteTable("trend_related", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  runId: text("run_id")
+    .notNull()
+    .references(() => trendRuns.id),
+  type: text("type").notNull(),
+  query: text("query").notNull(),
+  value: integer("value").notNull().default(0),
+});
+
+export const catalogRefreshJobs = sqliteTable("catalog_refresh_jobs", {
+  id: text("id").primaryKey(),
+  status: text("status").notNull(),
+  provider: text("provider").notNull(),
+  total: integer("total").notNull().default(0),
+  done: integer("done").notNull().default(0),
+  failed: integer("failed").notNull().default(0),
+  message: text("message"),
+  startedAt: text("started_at").notNull(),
+  finishedAt: text("finished_at"),
+});

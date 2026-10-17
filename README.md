@@ -1,44 +1,57 @@
 # Wordstat — Market Demand Intelligence
 
-Аналитический MVP по спросу на IT-услуги и цифровые товары по странам (экспертные оценки 2025–2026).
+Аналитика спроса: **live Google Trends** (что ищут люди) + каталог возможностей. Абсолютные keyword volumes — через платные ключи (SerpAPI / DataForSEO / Ahrefs).
 
-## Stack
+## Что умеет
 
-- Next.js 15 + TypeScript + Tailwind CSS
-- SQLite + Drizzle ORM
-- next-intl (RU/EN)
-- TanStack Table, CSV/Excel export
+- **Исследование** — запрос + страна + период → interest over time, related top/rising, рекомендация
+- **Каталог** — таблица с фильтрами; строки из seed и/или Trends (`source` бейдж)
+- **Настройки** — провайдер и API-ключи в SQLite
+- **Cron refresh** — `npm run trends:refresh` обновляет watchlist из Trends
+
+## Важно про Google Trends
+
+Trends даёт **относительный интерес 0–100**, не число поисков в месяц. В каталоге volume для Trends-строк = `avgInterest × 100` (proxy для сортировки).
 
 ## Local setup
 
 ```bash
 npm install
+python -m venv .venv
+# Windows:
+.venv\Scripts\pip install -r requirements-trends.txt
+# Linux:
+.venv/bin/pip install -r requirements-trends.txt
+
 npm run db:seed
 npm run dev
 ```
 
-Откройте [http://localhost:3000/ru](http://localhost:3000/ru).
+Откройте `/ru/research` и выполните запрос.
 
 ## Scripts
 
 | Script | Description |
 |--------|-------------|
-| `npm run db:generate-opps` | Генерация seed opportunities JSON |
-| `npm run db:seed` | Пересоздание SQLite из seed |
-| `npm run build` | Production build |
-| `npm start` | Start on `127.0.0.1:3010` |
+| `npm run db:seed` | Seed SQLite |
+| `npm run trends:refresh` | Watchlist → Trends → upsert opportunities |
+| `npm run build` / `npm start` | Production |
 
-## Deploy
+## Env / Settings
 
-Домен: `wordstat.1tlt.ru`  
-Путь на VPS: `/ssd/www/wordstat`
+См. `.env.example`. Ключи также задаются в UI **Настройки** (без рестарта).
+
+`KEYWORD_PROVIDER=google_trends|serpapi|dataforseo|ahrefs|expert_seed`
+
+## Deploy (VPS)
 
 ```bash
+cd /ssd/www/wordstat
 git pull
-npm ci
-npm run db:seed
+npm install
 npm run build
+bash deploy/setup-trends.sh   # venv + cron
 systemctl restart wordstat
 ```
 
-Данные помечены `source: expert_estimate`. Провайдеры DataForSEO / Ahrefs / Trends — stubs в `src/lib/providers`.
+Домен: https://wordstat.1tlt.ru

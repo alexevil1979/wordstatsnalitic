@@ -5,9 +5,11 @@
   },
   "nav": {
     "dashboard": "Dashboard",
+    "research": "Research",
     "opportunities": "Opportunities",
     "insights": "Insights",
-    "admin": "Data"
+    "admin": "Data",
+    "settings": "Settings"
   },
   "brand": {
     "name": "Wordstat",
@@ -27,7 +29,61 @@
     "topNiche": "Top niche",
     "avg": "Avg score",
     "launch": "Launch",
-    "disclaimer": "Data are expert estimates, not live API pulls. Source is tagged expert_estimate."
+    "disclaimer": "Catalog may mix expert_estimate rows and live Google Trends (relative interest 0–100, not absolute volume)."
+  },
+  "research": {
+    "title": "Google Trends research",
+    "subtitle": "Live demand: interest over time, related queries, and a recommendation from what people search.",
+    "disclaimer": "Google Trends returns relative interest (0–100), not monthly search volume. For absolute volumes, add SerpAPI / DataForSEO / Ahrefs keys in Settings later.",
+    "query": "Search query",
+    "queryPlaceholder": "e.g. ai agent for business",
+    "country": "Country",
+    "timeframe": "Timeframe",
+    "tf7d": "7 days",
+    "tf3m": "3 months",
+    "tf12m": "12 months",
+    "tf5y": "5 years",
+    "run": "Research",
+    "force": "Refresh (skip cache)",
+    "loading": "Loading Trends…",
+    "cached": "From cache",
+    "fresh": "Fresh Trends data",
+    "error": "Request failed",
+    "avg": "Avg interest",
+    "peak": "Peak",
+    "score": "Score",
+    "signals": "Signals",
+    "chart": "Interest over time",
+    "noPoints": "No interest points (rate limit or empty response)",
+    "rising": "Rising related",
+    "top": "Top related",
+    "insight": "Insight",
+    "niche": "Niche for catalog",
+    "addCatalog": "Add to catalog",
+    "added": "Added to catalog",
+    "updated": "Updated in catalog"
+  },
+  "settings": {
+    "title": "Data source settings",
+    "subtitle": "Provider and API keys. Secrets live in SQLite on the server, not in git.",
+    "provider": "Provider",
+    "providers": {
+      "google_trends": "Google Trends (free, pytrends)",
+      "serpapi": "SerpAPI Trends",
+      "dataforseo": "DataForSEO",
+      "ahrefs": "Ahrefs",
+      "expert_seed": "Seed only (no live)"
+    },
+    "ttl": "Trends cache TTL (hours)",
+    "python": "Python path (optional)",
+    "pythonHint": "Defaults to .venv/bin/python or system python3",
+    "keys": "API keys",
+    "keysHint": "Leave a secret field empty to keep the stored value.",
+    "configured": "(set)",
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Settings saved",
+    "error": "Could not save"
   },
   "opportunities": {
     "title": "Opportunity table",
@@ -46,7 +102,8 @@
     "results": "{count} rows",
     "columns": {
       "query": "Query / cluster",
-      "volume": "Volume/mo",
+      "volume": "Volume / proxy",
+      "source": "Source",
       "trend": "Trend",
       "competition": "Competition",
       "intent": "Intent",

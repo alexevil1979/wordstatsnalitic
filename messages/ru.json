@@ -5,9 +5,11 @@
   },
   "nav": {
     "dashboard": "Дашборд",
+    "research": "Исследование",
     "opportunities": "Возможности",
     "insights": "Инсайты",
-    "admin": "Данные"
+    "admin": "Данные",
+    "settings": "Настройки"
   },
   "brand": {
     "name": "Wordstat",
@@ -27,8 +29,63 @@
     "topNiche": "Топ-ниша",
     "avg": "Avg score",
     "launch": "Launch",
-    "disclaimer": "Данные — экспертные оценки, не live API. Источник отмечен как expert_estimate."
+    "disclaimer": "Каталог может содержать expert_estimate и live Google Trends (относительный интерес 0–100, не абсолютный volume)."
   },
+  "research": {
+    "title": "Исследование Google Trends",
+    "subtitle": "Живой спрос: интерес во времени, related queries и рекомендация на основе того, что ищут люди.",
+    "disclaimer": "Google Trends даёт относительный интерес (0–100), не число поисков в месяц. Для абсолютных объёмов позже подключите SerpAPI / DataForSEO / Ahrefs в Настройках.",
+    "query": "Поисковый запрос",
+    "queryPlaceholder": "например: ai agent for business",
+    "country": "Страна",
+    "timeframe": "Период",
+    "tf7d": "7 дней",
+    "tf3m": "3 месяца",
+    "tf12m": "12 месяцев",
+    "tf5y": "5 лет",
+    "run": "Исследовать",
+    "force": "Обновить без кэша",
+    "loading": "Загрузка Trends…",
+    "cached": "Из кэша",
+    "fresh": "Свежие данные Trends",
+    "error": "Ошибка запроса",
+    "avg": "Средний интерес",
+    "peak": "Пик",
+    "score": "Score",
+    "signals": "Сигналы",
+    "chart": "Interest over time",
+    "noPoints": "Нет точек интереса (лимит Google или пустой ответ)",
+    "rising": "Rising related",
+    "top": "Top related",
+    "insight": "Вывод",
+    "niche": "Ниша для каталога",
+    "addCatalog": "Добавить в каталог",
+    "added": "Добавлено в каталог",
+    "updated": "Обновлено в каталоге"
+  },
+  "settings": {
+    "title": "Настройки источников",
+    "subtitle": "Провайдер данных и API-ключи. Секреты хранятся в SQLite на сервере, не в git.",
+    "provider": "Провайдер",
+    "providers": {
+      "google_trends": "Google Trends (бесплатно, pytrends)",
+      "serpapi": "SerpAPI Trends",
+      "dataforseo": "DataForSEO",
+      "ahrefs": "Ahrefs",
+      "expert_seed": "Только seed (без live)"
+    },
+    "ttl": "TTL кэша Trends (часы)",
+    "python": "Путь к Python (опционально)",
+    "pythonHint": "По умолчанию .venv/bin/python или системный python3",
+    "keys": "API-ключи",
+    "keysHint": "Оставьте поле пустым, чтобы не менять уже сохранённый секрет.",
+    "configured": "(задан)",
+    "save": "Сохранить",
+    "saving": "Сохранение…",
+    "saved": "Настройки сохранены",
+    "error": "Не удалось сохранить"
+  },
+
   "opportunities": {
     "title": "Таблица возможностей",
     "subtitle": "Фильтруйте и сортируйте кластеры для быстрого решения: запускать, тестировать или подождать",
@@ -46,7 +103,8 @@
     "results": "{count} строк",
     "columns": {
       "query": "Запрос / кластер",
-      "volume": "Объём/мес",
+      "volume": "Объём / proxy",
+      "source": "Источник",
       "trend": "Динамика",
       "competition": "Конкуренция",
       "intent": "Intent",

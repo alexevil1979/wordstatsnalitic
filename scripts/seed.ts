@@ -80,6 +80,50 @@ sqlite.exec(`
   CREATE INDEX idx_opp_niche ON opportunities(niche_id);
   CREATE INDEX idx_opp_competition ON opportunities(competition);
   CREATE INDEX idx_opp_margin ON opportunities(margin_potential);
+
+  CREATE TABLE IF NOT EXISTS app_settings (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL DEFAULT '',
+    updated_at TEXT NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS trend_runs (
+    id TEXT PRIMARY KEY,
+    query TEXT NOT NULL,
+    country TEXT NOT NULL,
+    provider TEXT NOT NULL,
+    timeframe TEXT NOT NULL,
+    status TEXT NOT NULL,
+    error TEXT,
+    avg_interest REAL,
+    peak_interest REAL,
+    trend_direction TEXT,
+    insight_json TEXT,
+    created_at TEXT NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS trend_points (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    run_id TEXT NOT NULL REFERENCES trend_runs(id),
+    date TEXT NOT NULL,
+    interest INTEGER NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS trend_related (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    run_id TEXT NOT NULL REFERENCES trend_runs(id),
+    type TEXT NOT NULL,
+    query TEXT NOT NULL,
+    value INTEGER NOT NULL DEFAULT 0
+  );
+  CREATE TABLE IF NOT EXISTS catalog_refresh_jobs (
+    id TEXT PRIMARY KEY,
+    status TEXT NOT NULL,
+    provider TEXT NOT NULL,
+    total INTEGER NOT NULL DEFAULT 0,
+    done INTEGER NOT NULL DEFAULT 0,
+    failed INTEGER NOT NULL DEFAULT 0,
+    message TEXT,
+    started_at TEXT NOT NULL,
+    finished_at TEXT
+  );
 `);
 
 const insertCountry = sqlite.prepare(

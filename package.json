@@ -10,6 +10,7 @@
     "db:generate-opps": "tsx scripts/generate-opportunities.ts",
     "db:seed": "tsx scripts/seed.ts",
     "db:studio": "drizzle-kit studio",
+    "trends:refresh": "tsx scripts/trends-refresh.ts",
     "postinstall": "node -e \"try{require('fs').mkdirSync('.swc-cache',{recursive:true})}catch(e){}\""
   },
   "dependencies": {

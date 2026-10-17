@@ -134,6 +134,10 @@ export function OpportunitiesView({
                 : row.original.countryNameEn}{" "}
               ·{" "}
               {locale === "ru" ? row.original.nicheNameRu : row.original.nicheNameEn}
+              {" · "}
+              <span className="rounded bg-slate-100 px-1 py-0.5 font-medium text-slate-600">
+                {row.original.source}
+              </span>
             </div>
           </div>
         ),

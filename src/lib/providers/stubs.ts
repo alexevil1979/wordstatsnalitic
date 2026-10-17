@@ -1,20 +1,45 @@
-import type { KeywordProvider, PartialOpportunity } from "./types";
+import { getSetting } from "@/lib/settings";
+import type { KeywordProvider, PartialOpportunity, TrendResearchResult } from "./types";
 
 /**
- * Stubs for future live keyword APIs.
- * Wire credentials via env and replace throw with real HTTP calls.
+ * Stubs for paid keyword APIs — throw until credentials are set.
+ * Wire real HTTP when keys appear in Settings / env.
  */
 export class DataForSeoProvider implements KeywordProvider {
   readonly name = "dataforseo";
+
+  private ensure() {
+    const login = getSetting("DATAFORSEO_LOGIN");
+    const password = getSetting("DATAFORSEO_PASSWORD");
+    if (!login || !password) {
+      throw new Error(
+        "DataForSEO credentials missing. Set DATAFORSEO_LOGIN and DATAFORSEO_PASSWORD in Settings."
+      );
+    }
+    return { login, password };
+  }
+
+  async research(params: {
+    query: string;
+    country: string;
+    timeframe?: string;
+  }): Promise<TrendResearchResult> {
+    this.ensure();
+    void params;
+    // TODO: keywords_data/google_trends/explore/live
+    throw new Error(
+      "DataForSeoProvider credentials are set, but the Trends HTTP client is not implemented yet."
+    );
+  }
 
   async search(params: {
     query: string;
     country: string;
   }): Promise<PartialOpportunity[]> {
+    this.ensure();
     void params;
-    // TODO: DATAFORSEO_LOGIN / DATAFORSEO_PASSWORD → keywords_data API
     throw new Error(
-      "DataForSeoProvider not configured. Set credentials and implement API call."
+      "DataForSeoProvider credentials are set, but the Keywords API client is not implemented yet."
     );
   }
 }
@@ -22,29 +47,34 @@ export class DataForSeoProvider implements KeywordProvider {
 export class AhrefsProvider implements KeywordProvider {
   readonly name = "ahrefs";
 
-  async search(params: {
+  private ensure() {
+    const token = getSetting("AHREFS_API_TOKEN");
+    if (!token) {
+      throw new Error("AHREFS_API_TOKEN is not configured. Add it in Settings.");
+    }
+    return token;
+  }
+
+  async research(params: {
     query: string;
     country: string;
-  }): Promise<PartialOpportunity[]> {
+    timeframe?: string;
+  }): Promise<TrendResearchResult> {
+    this.ensure();
     void params;
-    // TODO: AHREFS_API_TOKEN → Keywords Explorer
     throw new Error(
-      "AhrefsProvider not configured. Set AHREFS_API_TOKEN and implement API call."
+      "AhrefsProvider token is set, but the Trends/volume client is not implemented yet."
     );
   }
-}
-
-export class GoogleTrendsProvider implements KeywordProvider {
-  readonly name = "google_trends";
 
   async search(params: {
     query: string;
     country: string;
   }): Promise<PartialOpportunity[]> {
+    this.ensure();
     void params;
-    // TODO: trends interest-over-time for relative dynamics
     throw new Error(
-      "GoogleTrendsProvider not configured. Implement Trends client."
+      "AhrefsProvider token is set, but the Keywords Explorer client is not implemented yet."
     );
   }
 }

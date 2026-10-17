@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button";
 
 const links = [
   { href: "/", key: "dashboard" as const },
+  { href: "/research", key: "research" as const },
   { href: "/opportunities", key: "opportunities" as const },
   { href: "/insights", key: "insights" as const },
   { href: "/admin", key: "admin" as const },
+  { href: "/settings", key: "settings" as const },
 ];
 
 export function SiteHeader() {
