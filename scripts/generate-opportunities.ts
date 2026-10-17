@@ -753,20 +753,15 @@ function recommend(
 ): Rec {
   if (trend === "declining") return competition === "high" ? "not_now" : "test";
   if (competition === "high") {
-    if (margin === "high" && entry !== "high") return "test";
+    if (margin === "high" && entry === "low") return "test";
     return "not_now";
   }
-  // Launch only for clear asymmetric bets
-  if (competition === "low" && margin === "high" && trend === "growing") return "launch";
-  if (
-    competition === "medium" &&
-    margin === "high" &&
-    trend === "growing" &&
-    entry !== "high"
-  ) {
+  // Launch only for clear asymmetric bets (low competition)
+  if (competition === "low" && margin === "high" && trend === "growing" && entry !== "high") {
     return "launch";
   }
   if (competition === "low" && margin === "high") return "test";
+  if (competition === "medium" && margin === "high" && trend === "growing") return "test";
   if (competition === "medium") return "test";
   return "test";
 }

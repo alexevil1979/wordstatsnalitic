@@ -119,3 +119,12 @@ const tx = sqlite.transaction(() => {
       JSON.stringify(i.nicheIds),
       JSON.stringify(i.countryCodes)
     );
+  }
+});
+
+tx();
+sqlite.close();
+
+console.log(
+  `Seeded DB: ${countries.length} countries, ${niches.length} niches, ${opportunities.length} opportunities, ${insights.length} insights`
+);
