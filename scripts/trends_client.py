@@ -46,12 +46,38 @@ def main() -> None:
         fail("query is required")
 
     try:
+        # urllib3 v2 removed method_whitelist; pytrends may still pass it —
+        # pin urllib3<2 via requirements-trends.txt. Soft-patch as fallback.
+        try:
+            import urllib3.util.retry as retry_mod
+
+            if not hasattr(retry_mod.Retry, "DEFAULT_ALLOWED_METHODS") and hasattr(
+                retry_mod.Retry, "__init__"
+            ):
+                pass
+            _orig = retry_mod.Retry.__init__
+
+            def _patched_init(self, *args, **kwargs):
+                if "method_whitelist" in kwargs and "allowed_methods" not in kwargs:
+                    kwargs["allowed_methods"] = kwargs.pop("method_whitelist")
+                elif "allowed_methods" in kwargs and "method_whitelist" not in kwargs:
+                    # older urllib3
+                    try:
+                        return _orig(self, *args, **kwargs)
+                    except TypeError:
+                        kwargs["method_whitelist"] = kwargs.pop("allowed_methods")
+                return _orig(self, *args, **kwargs)
+
+            retry_mod.Retry.__init__ = _patched_init  # type: ignore[method-assign]
+        except Exception:
+            pass
+
         from pytrends.request import TrendReq
     except ImportError:
-        fail("pytrends not installed. Run: pip install pytrends")
+        fail("pytrends not installed. Run: pip install -r requirements-trends.txt")
 
     try:
-        # hl/tz: English UI, UTC-ish; retries help with rate limits
+        # hl/tz: English UI, UTC; retries help with rate limits
         pytrends = TrendReq(hl="en-US", tz=0, retries=2, backoff_factor=0.4)
         pytrends.build_payload([query], cat=0, timeframe=timeframe, geo=geo, gprop="")
 
