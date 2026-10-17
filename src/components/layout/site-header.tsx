@@ -6,10 +6,10 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const links = [
-  { href: "/", key: "dashboard" as const },
-  { href: "/research", key: "research" as const },
+  { href: "/markets", key: "markets" as const },
   { href: "/opportunities", key: "opportunities" as const },
   { href: "/insights", key: "insights" as const },
+  { href: "/research", key: "research" as const },
   { href: "/admin", key: "admin" as const },
   { href: "/settings", key: "settings" as const },
 ];
@@ -34,10 +34,7 @@ export function SiteHeader() {
           </Link>
           <nav className="hidden items-center gap-1 md:flex">
             {links.map((l) => {
-              const active =
-                l.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(l.href);
+              const active = pathname.startsWith(l.href);
               return (
                 <Link
                   key={l.href}

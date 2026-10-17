@@ -1,12 +1,11 @@
-import { setRequestLocale } from "next-intl/server";
-import { DashboardView } from "@/components/dashboard/dashboard-view";
+import { redirect } from "next/navigation";
 
-export default async function DashboardPage({
+/** Home → full market analytics (all niches × major countries). */
+export default async function HomePage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  setRequestLocale(locale);
-  return <DashboardView />;
+  redirect(`/${locale}/markets`);
 }
