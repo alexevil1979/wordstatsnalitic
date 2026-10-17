@@ -5,7 +5,7 @@ APP_DIR=/ssd/www/wordstat
 DOMAIN=wordstat.1tlt.ru
 
 cd "$APP_DIR"
-npm install --omit=optional
+npm install
 npm run db:seed
 npm run build
 
