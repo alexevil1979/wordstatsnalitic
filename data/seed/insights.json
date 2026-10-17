@@ -1,0 +1,72 @@
+[
+  {
+    "id": "ins_01",
+    "rank": 1,
+    "titleRu": "Vertical AI-агенты для SMB — лучший баланс спрос/маржа",
+    "titleEn": "Vertical AI agents for SMB — best demand/margin balance",
+    "bodyRu": "В US, GB, AE/SA и SG растёт коммерческий спрос на узкие AI-агенты (поддержка, sales, receptionist), а не на «ещё один ChatGPT-курс». Конкуренция ниже, чем в generic AI-консалтинге, чек $2.5–12k + retainer. Рекомендация: выбрать 1–2 вертикали и продавать outcome, а не модель.",
+    "bodyEn": "US, GB, AE/SA and SG show rising commercial demand for narrow AI agents (support, sales, receptionist) rather than generic ChatGPT courses. Competition is lower than broad AI consulting; tickets $2.5–12k + retainer. Pick 1–2 verticals and sell outcomes, not models.",
+    "nicheIds": ["ai-agents", "prompts"],
+    "countryCodes": ["US", "GB", "AE", "SA", "SG"]
+  },
+  {
+    "id": "ins_02",
+    "rank": 2,
+    "titleRu": "Cyber / compliance (vCISO, SOC 2, ISO) на DE–GB–US–NL",
+    "titleEn": "Cyber / compliance (vCISO, SOC 2, ISO) in DE–GB–US–NL",
+    "bodyRu": "Регуляторное давление и требования enterprise-клиентов держат высокий intent. Вход сложнее (нужна экспертиза), но маржа и LTV ретейнеров сильные. Формат «fractional vCISO + readiness package» масштабируется лучше разовых пентестов.",
+    "bodyEn": "Regulatory pressure and enterprise buyer requirements keep intent high. Entry is harder (expertise required), but retainer margins and LTV are strong. Fractional vCISO + readiness packages scale better than one-off pentests.",
+    "nicheIds": ["cybersecurity"],
+    "countryCodes": ["DE", "GB", "US", "NL"]
+  },
+  {
+    "id": "ins_03",
+    "rank": 3,
+    "titleRu": "Make/Zapier/n8n packs для SMB — низкий вход, высокая маржа",
+    "titleEn": "Make/Zapier/n8n packs for SMB — low entry, high margin",
+    "bodyRu": "На US/AU/CA/GB конкуренция по готовым automation packs всё ещё ниже, чем у UI-китов и Notion-шаблонов. Продукт: отраслевой пакет + гайд установки + опциональный setup. Хороший путь к upsell в AI-агенты.",
+    "bodyEn": "On US/AU/CA/GB competition for ready-made automation packs is still lower than UI kits and Notion templates. Ship an industry pack + install guide + optional setup — a clean upsell path into AI agents.",
+    "nicheIds": ["automation-packs", "nocode"],
+    "countryCodes": ["US", "AU", "CA", "GB"]
+  },
+  {
+    "id": "ins_04",
+    "rank": 4,
+    "titleRu": "Performance + CRO продукты лучше «ещё одного SEO-агентства»",
+    "titleEn": "Performance + CRO products beat 'another SEO agency'",
+    "bodyRu": "Общий SEO/PPC рынок перегрет (High competition). Выигрывают упакованные офферы: CRO-аудит, 90-day growth sprint, SaaS-specific performance. US и GB остаются приоритетом по платёжеспособности.",
+    "bodyEn": "Broad SEO/PPC is overcrowded (High competition). Packaged offers win: CRO audit, 90-day growth sprint, SaaS-specific performance. US and GB remain priority markets by willingness to pay.",
+    "nicheIds": ["seo-marketing"],
+    "countryCodes": ["US", "GB"]
+  },
+  {
+    "id": "ins_05",
+    "rank": 5,
+    "titleRu": "Notion OS и ops-системы — только с нишевым углом",
+    "titleEn": "Notion OS / ops systems — only with a niche angle",
+    "bodyRu": "Generic Notion-шаблоны — High competition и средний intent. Перспективны узкие OS для agencies, HR, client portals + платный setup. Digital goods angle силён на EN-рынках при правильной нише.",
+    "bodyEn": "Generic Notion templates face High competition and medium intent. Niche OS for agencies, HR, client portals + paid setup still work. Strong digital-goods angle on EN markets when the niche is sharp.",
+    "nicheIds": ["notion-systems"],
+    "countryCodes": ["US", "GB", "AU"]
+  },
+  {
+    "id": "ins_06",
+    "rank": 6,
+    "titleRu": "DevOps / FinOps consulting — DE, NL, US",
+    "titleEn": "DevOps / FinOps consulting — DE, NL, US",
+    "bodyRu": "Спрос на контроль cloud-costs и platform engineering растёт. Высокий чек и высокий порог входа. Имеет смысл как экспертная практика или productized sprint (cost + reliability), не как low-ticket digital product.",
+    "bodyEn": "Demand for cloud-cost control and platform engineering is rising. High ticket, high barrier. Best as an expert practice or productized sprint (cost + reliability), not a low-ticket digital good.",
+    "nicheIds": ["devops"],
+    "countryCodes": ["DE", "NL", "US"]
+  },
+  {
+    "id": "ins_07",
+    "rank": 7,
+    "titleRu": "СНГ: автоматизация и AI-обёртки на локальной ценовой полке",
+    "titleEn": "CIS: automation & AI wrappers at local price points",
+    "bodyRu": "В RU/KZ/UZ сильный интерес к автоматизации и AI-обёрткам при другой цене и конкуренции (локальные запросы). Не копируйте USD-чеки 1:1 — упаковывайте быстрые внедрения и digital packs в рублях/тенге. Cyber и enterprise DevOps — скорее «тестировать».",
+    "bodyEn": "RU/KZ/UZ show strong interest in automation and AI wrappers at different price points and competition (local queries). Do not copy USD pricing 1:1 — package fast implementations and digital packs in local currency. Cyber and enterprise DevOps are closer to 'test'.",
+    "nicheIds": ["ai-agents", "automation-packs", "nocode", "micro-saas"],
+    "countryCodes": ["RU", "KZ", "UZ"]
+  }
+]

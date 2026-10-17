@@ -1,0 +1,19 @@
+[Unit]
+Description=Wordstat Market Demand Intelligence (Next.js)
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/ssd/www/wordstat
+Environment=HOME=/ssd/www/wordstat
+Environment=NODE_ENV=production
+Environment=PORT=3010
+Environment=HOSTNAME=127.0.0.1
+ExecStart=/usr/bin/npm start
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

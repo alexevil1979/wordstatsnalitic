@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "title": "Wordstat — Market Demand Intelligence",
+    "description": "Спрос, конкуренция и маржинальность IT-услуг и цифровых товаров по странам"
+  },
+  "nav": {
+    "dashboard": "Дашборд",
+    "opportunities": "Возможности",
+    "insights": "Инсайты",
+    "admin": "Данные"
+  },
+  "brand": {
+    "name": "Wordstat",
+    "tagline": "Market Demand Intelligence"
+  },
+  "dashboard": {
+    "title": "Обзор рынка",
+    "subtitle": "Ключевые сигналы спроса по IT-услугам и цифровым товарам (оценки 2025–2026)",
+    "total": "Всего кластеров",
+    "launchReady": "Готовы к запуску",
+    "avgScore": "Средний score",
+    "growing": "Растущие",
+    "topByCountry": "Топ-ниши по странам",
+    "topMargin": "Высокая маржа · низкая/средняя конкуренция",
+    "topScores": "Лучшие ставки по score",
+    "country": "Страна",
+    "topNiche": "Топ-ниша",
+    "avg": "Avg score",
+    "launch": "Launch",
+    "disclaimer": "Данные — экспертные оценки, не live API. Источник отмечен как expert_estimate."
+  },
+  "opportunities": {
+    "title": "Таблица возможностей",
+    "subtitle": "Фильтруйте и сортируйте кластеры для быстрого решения: запускать, тестировать или подождать",
+    "search": "Поиск по запросу…",
+    "filters": "Фильтры",
+    "country": "Страна",
+    "niche": "Ниша",
+    "category": "Категория",
+    "competition": "Конкуренция",
+    "margin": "Маржинальность",
+    "recommendation": "Рекомендация",
+    "all": "Все",
+    "exportCsv": "CSV",
+    "exportExcel": "Excel",
+    "results": "{count} строк",
+    "columns": {
+      "query": "Запрос / кластер",
+      "volume": "Объём/мес",
+      "trend": "Динамика",
+      "competition": "Конкуренция",
+      "intent": "Intent",
+      "margin": "Маржа",
+      "entry": "Вход",
+      "recommendation": "Рекомендация",
+      "offer": "Пример оффера",
+      "price": "Цена",
+      "score": "Score",
+      "country": "Страна",
+      "niche": "Ниша"
+    }
+  },
+  "insights": {
+    "title": "Инсайты и рекомендации",
+    "subtitle": "5–7 направлений с лучшим соотношением спрос / конкуренция / маржа",
+    "viewRelated": "Смотреть в таблице",
+    "rank": "Направление {rank}"
+  },
+  "admin": {
+    "title": "Управление данными",
+    "subtitle": "Добавляйте и обновляйте кластеры. Изменения пишутся в локальную SQLite.",
+    "add": "Добавить",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "confirmDelete": "Удалить эту запись?",
+    "created": "Запись создана",
+    "updated": "Запись обновлена",
+    "deleted": "Запись удалена",
+    "form": {
+      "query": "Поисковый запрос / кластер",
+      "country": "Страна",
+      "niche": "Ниша",
+      "volume": "Объём поиска",
+      "trend": "Динамика",
+      "competition": "Конкуренция",
+      "intent": "Коммерческий intent",
+      "margin": "Маржинальность",
+      "entry": "Сложность входа",
+      "recommendation": "Рекомендация",
+      "offerEn": "Пример оффера (EN)",
+      "offerRu": "Пример оффера (RU)",
+      "price": "Ценовой диапазон"
+    }
+  },
+  "enums": {
+    "trend": {
+      "growing": "Растёт",
+      "stable": "Стабильно",
+      "declining": "Падает"
+    },
+    "competition": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "level": {
+      "high": "Высокий",
+      "medium": "Средний"
+    },
+    "entry": {
+      "low": "Низкая",
+      "medium": "Средняя",
+      "high": "Высокая"
+    },
+    "recommendation": {
+      "launch": "Стоит запускать",
+      "test": "Тестировать",
+      "not_now": "Не сейчас"
+    },
+    "category": {
+      "it_services": "IT-услуги",
+      "digital_products": "Цифровые товары"
+    }
+  }
+}

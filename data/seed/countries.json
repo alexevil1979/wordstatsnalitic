@@ -1,0 +1,14 @@
+[
+  { "code": "US", "nameRu": "США", "nameEn": "United States", "region": "north_america", "currency": "USD" },
+  { "code": "GB", "nameRu": "Великобритания", "nameEn": "United Kingdom", "region": "europe", "currency": "GBP" },
+  { "code": "DE", "nameRu": "Германия", "nameEn": "Germany", "region": "europe", "currency": "EUR" },
+  { "code": "CA", "nameRu": "Канада", "nameEn": "Canada", "region": "north_america", "currency": "CAD" },
+  { "code": "AU", "nameRu": "Австралия", "nameEn": "Australia", "region": "apac", "currency": "AUD" },
+  { "code": "AE", "nameRu": "ОАЭ", "nameEn": "United Arab Emirates", "region": "mena", "currency": "AED" },
+  { "code": "SA", "nameRu": "Саудовская Аравия", "nameEn": "Saudi Arabia", "region": "mena", "currency": "SAR" },
+  { "code": "RU", "nameRu": "Россия", "nameEn": "Russia", "region": "cis", "currency": "RUB" },
+  { "code": "KZ", "nameRu": "Казахстан", "nameEn": "Kazakhstan", "region": "cis", "currency": "KZT" },
+  { "code": "UZ", "nameRu": "Узбекистан", "nameEn": "Uzbekistan", "region": "cis", "currency": "UZS" },
+  { "code": "NL", "nameRu": "Нидерланды", "nameEn": "Netherlands", "region": "europe", "currency": "EUR" },
+  { "code": "SG", "nameRu": "Сингапур", "nameEn": "Singapore", "region": "apac", "currency": "SGD" }
+]

@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "title": "Wordstat — Market Demand Intelligence",
+    "description": "Demand, competition and margin potential for IT services and digital products by country"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "opportunities": "Opportunities",
+    "insights": "Insights",
+    "admin": "Data"
+  },
+  "brand": {
+    "name": "Wordstat",
+    "tagline": "Market Demand Intelligence"
+  },
+  "dashboard": {
+    "title": "Market overview",
+    "subtitle": "Key demand signals for IT services and digital products (2025–2026 estimates)",
+    "total": "Total clusters",
+    "launchReady": "Launch-ready",
+    "avgScore": "Avg score",
+    "growing": "Growing",
+    "topByCountry": "Top niches by country",
+    "topMargin": "High margin · low/medium competition",
+    "topScores": "Best bets by score",
+    "country": "Country",
+    "topNiche": "Top niche",
+    "avg": "Avg score",
+    "launch": "Launch",
+    "disclaimer": "Data are expert estimates, not live API pulls. Source is tagged expert_estimate."
+  },
+  "opportunities": {
+    "title": "Opportunity table",
+    "subtitle": "Filter and sort clusters to decide fast: launch, test, or wait",
+    "search": "Search queries…",
+    "filters": "Filters",
+    "country": "Country",
+    "niche": "Niche",
+    "category": "Category",
+    "competition": "Competition",
+    "margin": "Margin",
+    "recommendation": "Recommendation",
+    "all": "All",
+    "exportCsv": "CSV",
+    "exportExcel": "Excel",
+    "results": "{count} rows",
+    "columns": {
+      "query": "Query / cluster",
+      "volume": "Volume/mo",
+      "trend": "Trend",
+      "competition": "Competition",
+      "intent": "Intent",
+      "margin": "Margin",
+      "entry": "Entry",
+      "recommendation": "Recommendation",
+      "offer": "Example offer",
+      "price": "Price",
+      "score": "Score",
+      "country": "Country",
+      "niche": "Niche"
+    }
+  },
+  "insights": {
+    "title": "Insights & recommendations",
+    "subtitle": "5–7 directions with the best demand / competition / margin mix",
+    "viewRelated": "Open in table",
+    "rank": "Direction {rank}"
+  },
+  "admin": {
+    "title": "Data management",
+    "subtitle": "Add and update clusters. Changes write to local SQLite.",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirmDelete": "Delete this row?",
+    "created": "Created",
+    "updated": "Updated",
+    "deleted": "Deleted",
+    "form": {
+      "query": "Search query / cluster",
+      "country": "Country",
+      "niche": "Niche",
+      "volume": "Search volume",
+      "trend": "Trend",
+      "competition": "Competition",
+      "intent": "Commercial intent",
+      "margin": "Margin potential",
+      "entry": "Entry difficulty",
+      "recommendation": "Recommendation",
+      "offerEn": "Example offer (EN)",
+      "offerRu": "Example offer (RU)",
+      "price": "Price range"
+    }
+  },
+  "enums": {
+    "trend": {
+      "growing": "Growing",
+      "stable": "Stable",
+      "declining": "Declining"
+    },
+    "competition": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "level": {
+      "high": "High",
+      "medium": "Medium"
+    },
+    "entry": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "recommendation": {
+      "launch": "Launch",
+      "test": "Test",
+      "not_now": "Not now"
+    },
+    "category": {
+      "it_services": "IT services",
+      "digital_products": "Digital products"
+    }
+  }
+}

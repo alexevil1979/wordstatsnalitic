@@ -1,0 +1,17 @@
+[
+  { "id": "ai-agents", "category": "it_services", "nameRu": "AI-агенты и автоматизация", "nameEn": "AI Agents & Automation" },
+  { "id": "no-code", "category": "it_services", "nameRu": "No-code разработка", "nameEn": "No-code Development" },
+  { "id": "devops", "category": "it_services", "nameRu": "DevOps и SRE", "nameEn": "DevOps & SRE" },
+  { "id": "cybersecurity", "category": "it_services", "nameRu": "Кибербезопасность", "nameEn": "Cybersecurity" },
+  { "id": "seo-marketing", "category": "it_services", "nameRu": "SEO и performance-маркетинг", "nameEn": "SEO & Performance Marketing" },
+  { "id": "web-dev", "category": "it_services", "nameRu": "Веб и мобильная разработка", "nameEn": "Web & Mobile Development" },
+  { "id": "ui-ux", "category": "it_services", "nameRu": "UI/UX и дизайн-системы", "nameEn": "UI/UX & Design Systems" },
+  { "id": "notion-systems", "category": "digital_products", "nameRu": "Notion-системы", "nameEn": "Notion Systems" },
+  { "id": "prompts", "category": "digital_products", "nameRu": "Промпт-паки", "nameEn": "Prompt Packs" },
+  { "id": "courses", "category": "digital_products", "nameRu": "Онлайн-курсы", "nameEn": "Digital Courses" },
+  { "id": "plugins", "category": "digital_products", "nameRu": "Плагины и расширения", "nameEn": "Plugins & Extensions" },
+  { "id": "micro-saas", "category": "digital_products", "nameRu": "Micro-SaaS", "nameEn": "Micro-SaaS" },
+  { "id": "ui-kits", "category": "digital_products", "nameRu": "UI-киты", "nameEn": "UI Kits" },
+  { "id": "make-zapier", "category": "digital_products", "nameRu": "Make / Zapier шаблоны", "nameEn": "Make / Zapier Templates" },
+  { "id": "gpt-agents", "category": "digital_products", "nameRu": "GPT-агенты (продукты)", "nameEn": "GPT Agent Products" }
+]
