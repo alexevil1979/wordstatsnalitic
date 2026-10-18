@@ -2,8 +2,8 @@ import { and, desc, eq, gt } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { db } from "@/db";
 import { trendPoints, trendRelated, trendRuns } from "@/db/schema";
-import { getKeywordProvider } from "@/lib/providers";
 import type { TrendResearchResult } from "@/lib/providers/types";
+import { resolveProviderForUser } from "@/lib/billing/resolve-provider";
 import { getSetting } from "@/lib/settings";
 import { analyzeTrends, computeTrendsScore } from "./analyze";
 import type { ResearchResponse, TrendInsight } from "./types";
@@ -133,7 +133,7 @@ export async function researchTrends(params: {
     }
   }
 
-  const provider = getKeywordProvider();
+  const { provider } = resolveProviderForUser(userId);
   if (!provider.research) {
     throw new Error(`Provider ${provider.name} does not support research()`);
   }

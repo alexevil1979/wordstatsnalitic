@@ -40,6 +40,15 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
           );
           return;
         }
+        const login = await signIn("credentials", {
+          email,
+          password,
+          redirect: false,
+        });
+        if (login?.error) {
+          setError(t("invalid"));
+          return;
+        }
         router.push("/cabinet");
         router.refresh();
         return;

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +11,6 @@ import {
   TrendBadge,
 } from "@/components/status-badges";
 import { formatVolume } from "@/lib/utils";
-import { downloadMarketXml } from "@/lib/markets-export";
 import { Link } from "@/i18n/navigation";
 import type { MarketOverview } from "@/lib/trends/overview-types";
 import { Download } from "lucide-react";
@@ -18,6 +18,8 @@ import { Download } from "lucide-react";
 export function MarketsView() {
   const t = useTranslations("markets");
   const locale = useLocale();
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.role === "admin";
   const [data, setData] = useState<MarketOverview | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -77,10 +79,29 @@ export function MarketsView() {
         <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
-            onClick={() => {
-              const stamp = new Date().toISOString().slice(0, 10);
-              downloadMarketXml(data, locale, `wordstat-markets-${stamp}.xml`);
-              toast.success(t("xmlDownloaded"));
+            onClick={async () => {
+              try {
+                const res = await fetch(`/api/markets/export?locale=${locale}`);
+                if (res.status === 401) {
+                  toast.error(t("loginForXml"));
+                  window.location.href = `/${locale}/auth/login`;
+                  return;
+                }
+                if (!res.ok) {
+                  const json = await res.json().catch(() => ({}));
+                  throw new Error(json.error || "export failed");
+                }
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `wordstat-markets-${new Date().toISOString().slice(0, 10)}.xml`;
+                a.click();
+                URL.revokeObjectURL(url);
+                toast.success(t("xmlDownloaded"));
+              } catch (e) {
+                toast.error(e instanceof Error ? e.message : t("error"));
+              }
             }}
             disabled={!data}
           >
@@ -90,9 +111,11 @@ export function MarketsView() {
           <Button variant="outline" onClick={load} disabled={loading}>
             {t("reload")}
           </Button>
-          <Button onClick={startRefresh} disabled={refreshing}>
-            {refreshing ? t("refreshing") : t("refreshAll")}
-          </Button>
+          {isAdmin ? (
+            <Button onClick={startRefresh} disabled={refreshing}>
+              {refreshing ? t("refreshing") : t("refreshAll")}
+            </Button>
+          ) : null}
         </div>
       </div>
 

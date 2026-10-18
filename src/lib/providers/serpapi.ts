@@ -13,10 +13,12 @@ import type {
 export class SerpApiTrendsProvider implements KeywordProvider {
   readonly name = "serpapi";
 
+  constructor(private readonly overrideKey?: string) {}
+
   private key() {
-    const key = getSetting("SERPAPI_KEY");
+    const key = this.overrideKey || getSetting("SERPAPI_KEY");
     if (!key) {
-      throw new Error("SERPAPI_KEY is not configured. Add it in Settings.");
+      throw new Error("SERPAPI_KEY is not configured. Add it in Cabinet (Pro) or Settings.");
     }
     return key;
   }

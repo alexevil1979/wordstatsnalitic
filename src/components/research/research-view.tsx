@@ -66,6 +66,11 @@ export function ResearchView() {
         body: JSON.stringify({ query, country, timeframe, force }),
       });
       const json = await res.json();
+      if (res.status === 401) {
+        toast.error(t("loginRequired"));
+        window.location.href = `/${locale}/auth/login`;
+        return;
+      }
       if (!res.ok) throw new Error(json.error || "Failed");
       setResult(json.data);
       toast.success(json.data.cached ? t("cached") : t("fresh"));
