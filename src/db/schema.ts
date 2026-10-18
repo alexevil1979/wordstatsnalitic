@@ -37,6 +37,7 @@ export const opportunities = sqliteTable("opportunities", {
   source: text("source").notNull().default("expert_estimate"),
   confidence: real("confidence").notNull().default(0.7),
   updatedAt: text("updated_at").notNull(),
+  userId: text("user_id"),
 });
 
 export const insights = sqliteTable("insights", {
@@ -69,6 +70,7 @@ export const trendRuns = sqliteTable("trend_runs", {
   trendDirection: text("trend_direction"),
   insightJson: text("insight_json"),
   createdAt: text("created_at").notNull(),
+  userId: text("user_id"),
 });
 
 export const trendPoints = sqliteTable("trend_points", {
@@ -100,4 +102,76 @@ export const catalogRefreshJobs = sqliteTable("catalog_refresh_jobs", {
   message: text("message"),
   startedAt: text("started_at").notNull(),
   finishedAt: text("finished_at"),
+});
+
+/** SaaS: users */
+export const users = sqliteTable("users", {
+  id: text("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
+  name: text("name"),
+  locale: text("locale").notNull().default("ru"),
+  role: text("role").notNull().default("user"), // user | admin
+  plan: text("plan").notNull().default("free"), // free | pro
+  status: text("status").notNull().default("active"), // active | disabled
+  emailVerifiedAt: text("email_verified_at"),
+  stripeCustomerId: text("stripe_customer_id"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export const subscriptions = sqliteTable("subscriptions", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  planId: text("plan_id").notNull().default("pro"),
+  status: text("status").notNull().default("inactive"), // active | past_due | canceled | inactive
+  stripeSubscriptionId: text("stripe_subscription_id"),
+  stripeCustomerId: text("stripe_customer_id"),
+  currentPeriodEnd: text("current_period_end"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export const userApiKeys = sqliteTable("user_api_keys", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  provider: text("provider").notNull(), // serpapi | dataforseo_login | dataforseo_password | ahrefs
+  ciphertext: text("ciphertext").notNull(),
+  iv: text("iv").notNull(),
+  hint: text("hint").notNull().default(""),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export const usageEvents = sqliteTable("usage_events", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: text("user_id").notNull(),
+  action: text("action").notNull(),
+  units: integer("units").notNull().default(1),
+  day: text("day").notNull(), // YYYY-MM-DD
+  createdAt: text("created_at").notNull(),
+});
+
+export const plans = sqliteTable("plans", {
+  id: text("id").primaryKey(), // free | pro
+  name: text("name").notNull(),
+  priceCents: integer("price_cents").notNull().default(0),
+  currency: text("currency").notNull().default("usd"),
+  dailyResearchCap: integer("daily_research_cap").notNull().default(20),
+  dailyXmlCap: integer("daily_xml_cap").notNull().default(3),
+  allowPaidKeys: integer("allow_paid_keys").notNull().default(0),
+  stripePriceId: text("stripe_price_id").notNull().default(""),
+  active: integer("active").notNull().default(1),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export const adminAuditLog = sqliteTable("admin_audit_log", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  actorId: text("actor_id").notNull(),
+  action: text("action").notNull(),
+  payload: text("payload").notNull().default("{}"),
+  createdAt: text("created_at").notNull(),
 });

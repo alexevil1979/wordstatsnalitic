@@ -1,11 +1,19 @@
 import { NextResponse } from "next/server";
 import { spawn } from "node:child_process";
 import path from "node:path";
+import { requireAdmin } from "@/lib/auth/session";
 
 export const runtime = "nodejs";
 
-/** Fire-and-forget full catalog Trends refresh (all niches × major countries). */
+/** Fire-and-forget full catalog Trends refresh (admin only). */
 export async function POST() {
+  try {
+    await requireAdmin();
+  } catch (e) {
+    if (e instanceof Response) return e;
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   const script = path.join(process.cwd(), "scripts", "trends-refresh.ts");
   const child = spawn(
     process.platform === "win32" ? "npx.cmd" : "npx",

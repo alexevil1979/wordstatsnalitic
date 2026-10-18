@@ -62,7 +62,8 @@ function persistRun(
   result: TrendResearchResult,
   insight: TrendInsight,
   status: "ok" | "error",
-  error?: string
+  error?: string,
+  userId?: string | null
 ): string {
   const id = nanoid(12);
   const createdAt = new Date().toISOString();
@@ -78,6 +79,7 @@ function persistRun(
       avgInterest: insight.avgInterest,
       peakInterest: insight.peakInterest,
       trendDirection: insight.trendDirection,
+      userId: userId ?? null,
       insightJson: JSON.stringify(insight),
       createdAt,
     })
@@ -107,10 +109,12 @@ export async function researchTrends(params: {
   country: string;
   timeframe?: string;
   force?: boolean;
+  userId?: string | null;
 }): Promise<ResearchResponse> {
   const query = params.query.trim();
   const country = params.country.toUpperCase();
   const timeframe = params.timeframe ?? "today 12-m";
+  const userId = params.userId ?? null;
 
   if (!params.force) {
     const cachedId = findFreshCache(query, country, timeframe);
@@ -137,7 +141,7 @@ export async function researchTrends(params: {
   try {
     const result = await provider.research({ query, country, timeframe });
     const insight = analyzeTrends(result);
-    const runId = persistRun(result, insight, "ok");
+    const runId = persistRun(result, insight, "ok", undefined, userId);
     return {
       ...result,
       insight,
@@ -157,7 +161,7 @@ export async function researchTrends(params: {
       relatedRising: [],
     };
     const insight = analyzeTrends(empty);
-    persistRun(empty, insight, "error", message);
+    persistRun(empty, insight, "error", message, userId);
     throw e;
   }
 }

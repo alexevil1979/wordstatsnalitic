@@ -33,6 +33,14 @@ h2,
   font-family: var(--font-display), Georgia, serif;
 }
 
+body.font-cjk {
+  font-family: var(--font-noto-sc), var(--font-sans), "Segoe UI", sans-serif;
+}
+
+body.font-arabic {
+  font-family: var(--font-noto-arabic), var(--font-sans), "Segoe UI", sans-serif;
+}
+
 .surface {
   background: var(--surface);
   border: 1px solid var(--border);

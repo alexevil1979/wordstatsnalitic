@@ -1,5 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
-import { AdminView } from "@/components/admin/admin-view";
+import { AdminSaasView } from "@/components/admin/admin-saas-view";
 
 export default async function AdminPage({
   params,
@@ -8,5 +8,5 @@ export default async function AdminPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <AdminView />;
+  return <AdminSaasView />;
 }
