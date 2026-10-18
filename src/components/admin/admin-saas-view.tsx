@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AdminView } from "@/components/admin/admin-view";
+import { AdminGatewaysView } from "@/components/admin/admin-gateways-view";
 
 type Stats = {
   usersTotal: number;
@@ -29,6 +30,7 @@ type PlanRow = {
   id: string;
   name: string;
   priceCents: number;
+  priceRub: number;
   dailyResearchCap: number;
   dailyXmlCap: number;
   allowPaidKeys: boolean;
@@ -38,7 +40,7 @@ type PlanRow = {
 export function AdminSaasView() {
   const t = useTranslations("adminSaaS");
   const [tab, setTab] = useState<
-    "dashboard" | "users" | "plans" | "catalog" | "system"
+    "dashboard" | "users" | "plans" | "gateways" | "catalog" | "system"
   >("dashboard");
   const [stats, setStats] = useState<Stats | null>(null);
   const [users, setUsers] = useState<UserRow[]>([]);
@@ -109,6 +111,7 @@ export function AdminSaasView() {
     ["dashboard", t("dashboard")],
     ["users", t("users")],
     ["plans", t("plans")],
+    ["gateways", t("gateways")],
     ["catalog", t("catalog")],
     ["system", t("system")],
   ] as const;
@@ -217,6 +220,20 @@ export function AdminSaasView() {
                 />
               </div>
               <div className="space-y-1.5">
+                <Label>{t("priceRub")}</Label>
+                <Input
+                  type="number"
+                  value={p.priceRub ?? 0}
+                  onChange={(e) =>
+                    setPlans((all) =>
+                      all.map((x) =>
+                        x.id === p.id ? { ...x, priceRub: Number(e.target.value) } : x
+                      )
+                    )
+                  }
+                />
+              </div>
+              <div className="space-y-1.5">
                 <Label>{t("dailyResearch")}</Label>
                 <Input
                   type="number"
@@ -277,13 +294,19 @@ export function AdminSaasView() {
         </div>
       ) : null}
 
+      {tab === "gateways" ? <AdminGatewaysView /> : null}
+
       {tab === "catalog" ? <AdminView /> : null}
 
       {tab === "system" ? (
         <div className="surface space-y-2 p-4 text-sm text-slate-700">
           <p>DB: SQLite (WAL) — Postgres docker ready for cutover</p>
           <p>Redis: available on VPS for rate-limit upgrade</p>
-          <p>Stripe: set STRIPE_SECRET_KEY + STRIPE_PRICE_PRO + STRIPE_WEBHOOK_SECRET</p>
+          <p>
+            Payments: same gateways as fullvpnservice — configure in Admin → Gateways (YooKassa,
+            FreeKassa, Platega, FriendlyPay, NOWPayments, BetaTransfer, Stripe, PayPal, …)
+          </p>
+          <p>Optional env: STRIPE_SECRET_KEY, STRIPE_PRICE_PRO, STRIPE_WEBHOOK_SECRET, USD_RUB_RATE</p>
           <p>Auth: AUTH_SECRET, APP_URL, CREDENTIALS_ENCRYPTION_KEY</p>
         </div>
       ) : null}

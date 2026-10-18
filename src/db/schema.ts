@@ -159,12 +159,42 @@ export const plans = sqliteTable("plans", {
   id: text("id").primaryKey(), // free | pro
   name: text("name").notNull(),
   priceCents: integer("price_cents").notNull().default(0),
+  priceRub: integer("price_rub").notNull().default(0),
   currency: text("currency").notNull().default("usd"),
   dailyResearchCap: integer("daily_research_cap").notNull().default(20),
   dailyXmlCap: integer("daily_xml_cap").notNull().default(3),
   allowPaidKeys: integer("allow_paid_keys").notNull().default(0),
   stripePriceId: text("stripe_price_id").notNull().default(""),
   active: integer("active").notNull().default(1),
+  updatedAt: text("updated_at").notNull(),
+});
+
+/** Same model as fullvpnservice payment_gateways */
+export const paymentGateways = sqliteTable("payment_gateways", {
+  id: text("id").primaryKey(),
+  code: text("code").notNull().unique(),
+  name: text("name").notNull(),
+  enabled: integer("enabled").notNull().default(0),
+  testMode: integer("test_mode").notNull().default(1),
+  minAmountRub: real("min_amount_rub").notNull().default(0),
+  configJson: text("config_json").notNull().default("{}"),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export const payments = sqliteTable("payments", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  gateway: text("gateway").notNull(),
+  amount: real("amount").notNull(),
+  currency: text("currency").notNull().default("RUB"),
+  status: text("status").notNull().default("pending"), // pending | paid | failed | canceled
+  externalId: text("external_id"),
+  planId: text("plan_id").notNull().default("pro"),
+  metaJson: text("meta_json").notNull().default("{}"),
+  paidAt: text("paid_at"),
+  createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
 

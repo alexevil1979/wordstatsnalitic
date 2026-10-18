@@ -34,12 +34,17 @@ type MeResponse = {
   stripeConfigured: boolean;
 };
 
+type PayMethod = { code: string; name: string; testMode: boolean };
+
 export function CabinetView() {
   const t = useTranslations("cabinet");
   const tb = useTranslations("billing");
   const locale = useLocale();
   const sp = useSearchParams();
   const [data, setData] = useState<MeResponse | null>(null);
+  const [methods, setMethods] = useState<PayMethod[]>([]);
+  const [amountRub, setAmountRub] = useState(2490);
+  const [gateway, setGateway] = useState("");
   const [tab, setTab] = useState<"overview" | "keys" | "history" | "billing" | "profile">(
     "overview"
   );
@@ -64,6 +69,13 @@ export function CabinetView() {
       locale: json.user.locale || locale,
       password: "",
     });
+    const m = await fetch(`/api/billing/methods?locale=${locale}`);
+    if (m.ok) {
+      const mj = await m.json();
+      setMethods(mj.methods || []);
+      setAmountRub(mj.amountRub || 2490);
+      if (mj.methods?.[0] && !gateway) setGateway(mj.methods[0].code);
+    }
   }
 
   useEffect(() => {
@@ -119,14 +131,18 @@ export function CabinetView() {
   }
 
   async function checkout() {
+    if (!gateway) {
+      toast.error(tb("pickMethod"));
+      return;
+    }
     const res = await fetch("/api/billing/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ locale }),
+      body: JSON.stringify({ locale, gateway }),
     });
     const json = await res.json();
     if (!res.ok) {
-      toast.error(tb("stripeMissing"));
+      toast.error(json.message || tb("payFailed"));
       return;
     }
     if (json.url) window.location.href = json.url;
@@ -295,17 +311,48 @@ export function CabinetView() {
           </div>
           <div className="surface p-4 ring-2 ring-teal-700/30">
             <h2 className="font-display text-xl">
-              {tb("pro")} · {tb("price")}
+              {tb("pro")} · {amountRub} ₽ / ${(data.plan.priceCents / 100).toFixed(0)}
             </h2>
             <p className="mt-2 text-sm text-slate-600">{tb("proFeatures")}</p>
-            {!data.stripeConfigured ? (
-              <p className="mt-3 text-sm text-amber-800">{tb("stripeMissing")}</p>
-            ) : null}
+            {methods.length === 0 ? (
+              <p className="mt-3 text-sm text-amber-800">{tb("noMethods")}</p>
+            ) : (
+              <div className="mt-4 space-y-2">
+                <Label>{tb("payMethod")}</Label>
+                <div className="grid gap-2">
+                  {methods.map((m) => (
+                    <label
+                      key={m.code}
+                      className={`flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm ${
+                        gateway === m.code
+                          ? "border-teal-700 bg-teal-50"
+                          : "border-slate-200 bg-white"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="gateway"
+                        checked={gateway === m.code}
+                        onChange={() => setGateway(m.code)}
+                      />
+                      <span>{m.name}</span>
+                      {m.testMode ? (
+                        <span className="ms-auto text-[10px] uppercase text-amber-700">test</span>
+                      ) : null}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
             <div className="mt-4 flex gap-2">
-              <Button onClick={() => void checkout()}>{tb("checkout")}</Button>
-              <Button variant="outline" onClick={() => void portal()}>
-                {tb("portal")}
+              <Button onClick={() => void checkout()} disabled={!gateway}>
+                {tb("checkout")}
               </Button>
+              {data.stripeConfigured ? (
+                <Button variant="outline" onClick={() => void portal()}>
+                  {tb("portal")}
+                </Button>
+              ) : null}
             </div>
           </div>
         </div>

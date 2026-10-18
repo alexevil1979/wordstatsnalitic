@@ -98,6 +98,7 @@ export function ensureTrendsSchema(sqlite: { exec: (sql: string) => unknown }) {
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
       price_cents INTEGER NOT NULL DEFAULT 0,
+      price_rub INTEGER NOT NULL DEFAULT 0,
       currency TEXT NOT NULL DEFAULT 'usd',
       daily_research_cap INTEGER NOT NULL DEFAULT 20,
       daily_xml_cap INTEGER NOT NULL DEFAULT 3,
@@ -106,6 +107,32 @@ export function ensureTrendsSchema(sqlite: { exec: (sql: string) => unknown }) {
       active INTEGER NOT NULL DEFAULT 1,
       updated_at TEXT NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS payment_gateways (
+      id TEXT PRIMARY KEY,
+      code TEXT NOT NULL UNIQUE,
+      name TEXT NOT NULL,
+      enabled INTEGER NOT NULL DEFAULT 0,
+      test_mode INTEGER NOT NULL DEFAULT 1,
+      min_amount_rub REAL NOT NULL DEFAULT 0,
+      config_json TEXT NOT NULL DEFAULT '{}',
+      updated_at TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS payments (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL REFERENCES users(id),
+      gateway TEXT NOT NULL,
+      amount REAL NOT NULL,
+      currency TEXT NOT NULL DEFAULT 'RUB',
+      status TEXT NOT NULL DEFAULT 'pending',
+      external_id TEXT,
+      plan_id TEXT NOT NULL DEFAULT 'pro',
+      meta_json TEXT NOT NULL DEFAULT '{}',
+      paid_at TEXT,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_payments_user ON payments(user_id, created_at);
+    CREATE INDEX IF NOT EXISTS idx_payments_external ON payments(gateway, external_id);
     CREATE TABLE IF NOT EXISTS admin_audit_log (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       actor_id TEXT NOT NULL,
@@ -118,6 +145,7 @@ export function ensureTrendsSchema(sqlite: { exec: (sql: string) => unknown }) {
   // Additive columns for older DBs
   tryAddColumn(sqlite, "trend_runs", "user_id", "TEXT");
   tryAddColumn(sqlite, "opportunities", "user_id", "TEXT");
+  tryAddColumn(sqlite, "plans", "price_rub", "INTEGER NOT NULL DEFAULT 0");
 }
 
 function tryAddColumn(

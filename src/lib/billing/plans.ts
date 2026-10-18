@@ -8,6 +8,8 @@ export type PlanRow = {
   id: PlanId;
   name: string;
   priceCents: number;
+  /** RUB major units for RU/CIS gateways (same idea as fullvpnservice tariffs). */
+  priceRub: number;
   currency: string;
   dailyResearchCap: number;
   dailyXmlCap: number;
@@ -20,6 +22,7 @@ const DEFAULTS: PlanRow[] = [
     id: "free",
     name: "Free",
     priceCents: 0,
+    priceRub: 0,
     currency: "usd",
     dailyResearchCap: 20,
     dailyXmlCap: 3,
@@ -30,6 +33,7 @@ const DEFAULTS: PlanRow[] = [
     id: "pro",
     name: "Pro",
     priceCents: 2900,
+    priceRub: 2490,
     currency: "usd",
     dailyResearchCap: 500,
     dailyXmlCap: 200,
@@ -48,6 +52,7 @@ export function ensureDefaultPlans() {
           id: p.id,
           name: p.name,
           priceCents: p.priceCents,
+          priceRub: p.priceRub,
           currency: p.currency,
           dailyResearchCap: p.dailyResearchCap,
           dailyXmlCap: p.dailyXmlCap,
@@ -57,18 +62,21 @@ export function ensureDefaultPlans() {
           updatedAt: now,
         })
         .run();
+    } else if (!existing.priceRub && p.priceRub) {
+      db.update(plans)
+        .set({ priceRub: p.priceRub, updatedAt: now })
+        .where(eq(plans.id, p.id))
+        .run();
     }
   }
 }
 
-export function getPlan(planId: string): PlanRow {
-  ensureDefaultPlans();
-  const row = db.select().from(plans).where(eq(plans.id, planId)).get();
-  if (!row) return DEFAULTS.find((d) => d.id === "free")!;
+function mapPlan(row: typeof plans.$inferSelect): PlanRow {
   return {
     id: row.id as PlanId,
     name: row.name,
     priceCents: row.priceCents,
+    priceRub: row.priceRub || (row.id === "pro" ? 2490 : 0),
     currency: row.currency,
     dailyResearchCap: row.dailyResearchCap,
     dailyXmlCap: row.dailyXmlCap,
@@ -77,20 +85,14 @@ export function getPlan(planId: string): PlanRow {
   };
 }
 
+export function getPlan(planId: string): PlanRow {
+  ensureDefaultPlans();
+  const row = db.select().from(plans).where(eq(plans.id, planId)).get();
+  if (!row) return DEFAULTS.find((d) => d.id === "free")!;
+  return mapPlan(row);
+}
+
 export function listPlans(): PlanRow[] {
   ensureDefaultPlans();
-  return db
-    .select()
-    .from(plans)
-    .all()
-    .map((row) => ({
-      id: row.id as PlanId,
-      name: row.name,
-      priceCents: row.priceCents,
-      currency: row.currency,
-      dailyResearchCap: row.dailyResearchCap,
-      dailyXmlCap: row.dailyXmlCap,
-      allowPaidKeys: Boolean(row.allowPaidKeys),
-      stripePriceId: row.stripePriceId || process.env.STRIPE_PRICE_PRO || "",
-    }));
+  return db.select().from(plans).all().map(mapPlan);
 }

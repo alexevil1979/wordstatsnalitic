@@ -21,6 +21,7 @@ export async function GET() {
 const schema = z.object({
   id: z.enum(["free", "pro"]),
   priceCents: z.number().int().min(0).optional(),
+  priceRub: z.number().int().min(0).optional(),
   dailyResearchCap: z.number().int().min(0).optional(),
   dailyXmlCap: z.number().int().min(0).optional(),
   allowPaidKeys: z.boolean().optional(),
@@ -34,6 +35,7 @@ export async function PUT(req: NextRequest) {
     const body = schema.parse(await req.json());
     const patch: Record<string, unknown> = { updatedAt: new Date().toISOString() };
     if (body.priceCents !== undefined) patch.priceCents = body.priceCents;
+    if (body.priceRub !== undefined) patch.priceRub = body.priceRub;
     if (body.dailyResearchCap !== undefined) patch.dailyResearchCap = body.dailyResearchCap;
     if (body.dailyXmlCap !== undefined) patch.dailyXmlCap = body.dailyXmlCap;
     if (body.allowPaidKeys !== undefined) patch.allowPaidKeys = body.allowPaidKeys ? 1 : 0;
