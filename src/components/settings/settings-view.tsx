@@ -13,16 +13,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Link } from "@/i18n/navigation";
 
 type PublicSettings = {
   KEYWORD_PROVIDER: string;
   TRENDS_CACHE_TTL_HOURS: string;
   TRENDS_PYTHON: string;
-  hasSerpApiKey: boolean;
-  hasDataForSeo: boolean;
-  hasAhrefs: boolean;
 };
 
+/** Admin-only: catalog refresh worker. User BYOK keys → Cabinet. */
 export function SettingsView() {
   const t = useTranslations("settings");
   const [loading, setLoading] = useState(true);
@@ -30,11 +29,6 @@ export function SettingsView() {
   const [provider, setProvider] = useState("google_trends");
   const [ttl, setTtl] = useState("24");
   const [python, setPython] = useState("");
-  const [serp, setSerp] = useState("");
-  const [dfsLogin, setDfsLogin] = useState("");
-  const [dfsPass, setDfsPass] = useState("");
-  const [ahrefs, setAhrefs] = useState("");
-  const [flags, setFlags] = useState({ serp: false, dfs: false, ahrefs: false });
 
   useEffect(() => {
     fetch("/api/settings")
@@ -44,11 +38,6 @@ export function SettingsView() {
         setProvider(d.KEYWORD_PROVIDER || "google_trends");
         setTtl(d.TRENDS_CACHE_TTL_HOURS || "24");
         setPython(d.TRENDS_PYTHON || "");
-        setFlags({
-          serp: d.hasSerpApiKey,
-          dfs: d.hasDataForSeo,
-          ahrefs: d.hasAhrefs,
-        });
       })
       .finally(() => setLoading(false));
   }, []);
@@ -56,32 +45,17 @@ export function SettingsView() {
   async function save() {
     setSaving(true);
     try {
-      const body: Record<string, string> = {
-        KEYWORD_PROVIDER: provider,
-        TRENDS_CACHE_TTL_HOURS: ttl,
-        TRENDS_PYTHON: python,
-      };
-      if (serp) body.SERPAPI_KEY = serp;
-      if (dfsLogin) body.DATAFORSEO_LOGIN = dfsLogin;
-      if (dfsPass) body.DATAFORSEO_PASSWORD = dfsPass;
-      if (ahrefs) body.AHREFS_API_TOKEN = ahrefs;
-
       const res = await fetch("/api/settings", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify({
+          KEYWORD_PROVIDER: provider,
+          TRENDS_CACHE_TTL_HOURS: ttl,
+          TRENDS_PYTHON: python,
+        }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Failed");
-      const d = json.data as PublicSettings;
-      setFlags({
-        serp: d.hasSerpApiKey,
-        dfs: d.hasDataForSeo,
-        ahrefs: d.hasAhrefs,
-      });
-      setSerp("");
-      setDfsPass("");
-      setAhrefs("");
       toast.success(t("saved"));
     } catch (e) {
       toast.error(e instanceof Error ? e.message : t("error"));
@@ -100,7 +74,13 @@ export function SettingsView() {
         <h1 className="font-display text-3xl tracking-tight text-slate-900">
           {t("title")}
         </h1>
-        <p className="mt-2 text-sm text-slate-600">{t("subtitle")}</p>
+        <p className="mt-2 text-sm text-slate-600">{t("subtitleAdmin")}</p>
+        <p className="mt-2 text-sm text-teal-900">
+          {t("byokNote")}{" "}
+          <Link href="/cabinet?tab=keys" className="underline underline-offset-2">
+            {t("toCabinetKeys")}
+          </Link>
+        </p>
       </div>
 
       <div className="surface space-y-5 p-5">
@@ -112,12 +92,10 @@ export function SettingsView() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="google_trends">{t("providers.google_trends")}</SelectItem>
-              <SelectItem value="serpapi">{t("providers.serpapi")}</SelectItem>
-              <SelectItem value="dataforseo">{t("providers.dataforseo")}</SelectItem>
-              <SelectItem value="ahrefs">{t("providers.ahrefs")}</SelectItem>
               <SelectItem value="expert_seed">{t("providers.expert_seed")}</SelectItem>
             </SelectContent>
           </Select>
+          <p className="text-xs text-slate-500">{t("providerCatalogHint")}</p>
         </div>
 
         <div className="space-y-1.5">
@@ -135,70 +113,10 @@ export function SettingsView() {
           <p className="text-xs text-slate-500">{t("pythonHint")}</p>
         </div>
 
-        <div className="border-t border-slate-100 pt-4 space-y-4">
-          <h2 className="font-display text-lg text-slate-900">{t("keys")}</h2>
-          <p className="text-xs text-slate-500">{t("keysHint")}</p>
-
-          <Field
-            label={`SerpAPI ${flags.serp ? t("configured") : ""}`}
-            value={serp}
-            onChange={setSerp}
-            placeholder={flags.serp ? "••••••••" : "SERPAPI_KEY"}
-            type="password"
-          />
-          <Field
-            label={`DataForSEO login ${flags.dfs ? t("configured") : ""}`}
-            value={dfsLogin}
-            onChange={setDfsLogin}
-            placeholder="login"
-          />
-          <Field
-            label="DataForSEO password"
-            value={dfsPass}
-            onChange={setDfsPass}
-            placeholder={flags.dfs ? "••••••••" : "password"}
-            type="password"
-          />
-          <Field
-            label={`Ahrefs ${flags.ahrefs ? t("configured") : ""}`}
-            value={ahrefs}
-            onChange={setAhrefs}
-            placeholder={flags.ahrefs ? "••••••••" : "AHREFS_API_TOKEN"}
-            type="password"
-          />
-        </div>
-
-        <Button onClick={save} disabled={saving}>
+        <Button onClick={() => void save()} disabled={saving}>
           {saving ? t("saving") : t("save")}
         </Button>
       </div>
-    </div>
-  );
-}
-
-function Field({
-  label,
-  value,
-  onChange,
-  placeholder,
-  type = "text",
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  placeholder?: string;
-  type?: string;
-}) {
-  return (
-    <div className="space-y-1.5">
-      <Label>{label}</Label>
-      <Input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        autoComplete="off"
-      />
     </div>
   );
 }

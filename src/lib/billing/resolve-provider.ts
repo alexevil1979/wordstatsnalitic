@@ -6,9 +6,9 @@ import type { KeywordProvider } from "@/lib/providers/types";
 import { SerpApiTrendsProvider } from "@/lib/providers/serpapi";
 
 /**
- * Free → always google_trends (never burn platform SerpAPI).
- * Pro with personal SerpAPI key → serpapi with that key.
- * Otherwise → platform default provider (still google_trends by default).
+ * BYOK model: Wordstat never spends platform paid API credits for users.
+ * Free → google_trends only.
+ * Pro → personal SerpAPI (or other user keys) when configured; else google_trends.
  */
 export function resolveProviderForUser(userId?: string | null): {
   provider: KeywordProvider;

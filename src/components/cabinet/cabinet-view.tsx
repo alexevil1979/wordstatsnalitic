@@ -45,8 +45,19 @@ export function CabinetView() {
   const [methods, setMethods] = useState<PayMethod[]>([]);
   const [amountRub, setAmountRub] = useState(2490);
   const [gateway, setGateway] = useState("");
-  const [tab, setTab] = useState<"overview" | "keys" | "history" | "billing" | "profile">(
-    "overview"
+  const initialTab = (sp.get("tab") as
+    | "overview"
+    | "keys"
+    | "history"
+    | "billing"
+    | "profile"
+    | null) || "keys";
+  const [tab, setTab] = useState<
+    "overview" | "keys" | "history" | "billing" | "profile"
+  >(
+    ["overview", "keys", "history", "billing", "profile"].includes(initialTab)
+      ? initialTab
+      : "keys"
   );
   const [keys, setKeys] = useState({
     serpapi: "",
@@ -204,6 +215,9 @@ export function CabinetView() {
             <div className="text-xs uppercase tracking-wide text-slate-500">{t("plan")}</div>
             <div className="mt-1 text-2xl font-semibold">{data.user.plan.toUpperCase()}</div>
             <div className="mt-2 text-sm text-slate-600">{t("freeHint")}</div>
+            <Button className="mt-3" size="sm" variant="outline" onClick={() => setTab("keys")}>
+              {t("keys")}
+            </Button>
           </div>
           <div className="surface p-4">
             <div className="text-xs uppercase tracking-wide text-slate-500">{t("usageToday")}</div>
@@ -239,38 +253,58 @@ export function CabinetView() {
       ) : null}
 
       {tab === "keys" ? (
-        <div className="surface max-w-xl space-y-4 p-4">
-          {!data.plan.allowPaidKeys ? (
-            <p className="text-sm text-amber-800">{t("proOnly")}</p>
-          ) : null}
-          <p className="text-sm text-slate-600">{t("keysHint")}</p>
-          {(
-            [
-              ["serpapi", t("serpapi")],
-              ["dataforseo_login", t("dataforseoLogin")],
-              ["dataforseo_password", t("dataforseoPassword")],
-              ["ahrefs", t("ahrefs")],
-            ] as const
-          ).map(([key, label]) => (
-            <div key={key} className="space-y-1.5">
-              <Label>
-                {label}{" "}
-                {data.keys[key]?.configured ? (
-                  <span className="text-teal-700">{t("configured")}</span>
-                ) : null}
-              </Label>
-              <Input
-                type="password"
-                value={keys[key]}
-                disabled={!data.plan.allowPaidKeys}
-                placeholder={data.keys[key]?.hint || ""}
-                onChange={(e) => setKeys((s) => ({ ...s, [key]: e.target.value }))}
-              />
-            </div>
-          ))}
-          <Button onClick={() => void saveKeys()} disabled={!data.plan.allowPaidKeys}>
-            {t("saveKeys")}
-          </Button>
+        <div className="max-w-xl space-y-4">
+          <div className="surface space-y-3 p-4">
+            <h2 className="font-display text-xl text-slate-900">{t("keysTitle")}</h2>
+            <p className="text-sm text-slate-700">{t("byokLead")}</p>
+            <ul className="list-disc space-y-1 ps-5 text-sm text-slate-600">
+              <li>{t("byokBullet1")}</li>
+              <li>{t("byokBullet2")}</li>
+              <li>{t("byokBullet3")}</li>
+            </ul>
+          </div>
+
+          <div className="surface space-y-4 p-4">
+            {!data.plan.allowPaidKeys ? (
+              <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+                <p>{t("proOnly")}</p>
+                <Button className="mt-2" size="sm" onClick={() => setTab("billing")}>
+                  {t("upgrade")}
+                </Button>
+              </div>
+            ) : (
+              <p className="text-sm text-slate-600">{t("keysHint")}</p>
+            )}
+            {(
+              [
+                ["serpapi", t("serpapi"), t("serpapiHelp")],
+                ["dataforseo_login", t("dataforseoLogin"), t("dataforseoHelp")],
+                ["dataforseo_password", t("dataforseoPassword"), ""],
+                ["ahrefs", t("ahrefs"), t("ahrefsHelp")],
+              ] as const
+            ).map(([key, label, help]) => (
+              <div key={key} className="space-y-1.5">
+                <Label>
+                  {label}{" "}
+                  {data.keys[key]?.configured ? (
+                    <span className="text-teal-700">{t("configured")}</span>
+                  ) : null}
+                </Label>
+                <Input
+                  type="password"
+                  value={keys[key]}
+                  disabled={!data.plan.allowPaidKeys}
+                  placeholder={data.keys[key]?.hint || t("pasteOwnKey")}
+                  onChange={(e) => setKeys((s) => ({ ...s, [key]: e.target.value }))}
+                  autoComplete="off"
+                />
+                {help ? <p className="text-xs text-slate-500">{help}</p> : null}
+              </div>
+            ))}
+            <Button onClick={() => void saveKeys()} disabled={!data.plan.allowPaidKeys}>
+              {t("saveKeys")}
+            </Button>
+          </div>
         </div>
       ) : null}
 
