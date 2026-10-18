@@ -34,7 +34,7 @@ type MeResponse = {
   stripeConfigured: boolean;
 };
 
-type PayMethod = { code: string; name: string; testMode: boolean };
+type PayMethod = { code: string; name: string; description?: string; testMode: boolean };
 
 export function CabinetView() {
   const t = useTranslations("cabinet");
@@ -338,57 +338,69 @@ export function CabinetView() {
       ) : null}
 
       {tab === "billing" ? (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="space-y-4">
           <div className="surface p-4">
-            <h2 className="font-display text-xl">{tb("free")}</h2>
-            <p className="mt-2 text-sm text-slate-600">{tb("freeFeatures")}</p>
+            <p className="text-sm text-slate-600">
+              {tb("pro")} · <strong className="text-teal-800">{amountRub} ₽</strong>
+              {" / "}
+              <strong>${(data.plan.priceCents / 100).toFixed(0)}</strong>
+            </p>
+            <p className="mt-1 text-sm text-slate-600">{tb("proFeatures")}</p>
+            <p className="mt-3 text-xs text-slate-500">{tb("free")} — {tb("freeFeatures")}</p>
           </div>
-          <div className="surface p-4 ring-2 ring-teal-700/30">
-            <h2 className="font-display text-xl">
-              {tb("pro")} · {amountRub} ₽ / ${(data.plan.priceCents / 100).toFixed(0)}
-            </h2>
-            <p className="mt-2 text-sm text-slate-600">{tb("proFeatures")}</p>
-            {methods.length === 0 ? (
-              <p className="mt-3 text-sm text-amber-800">{tb("noMethods")}</p>
-            ) : (
-              <div className="mt-4 space-y-2">
-                <Label>{tb("payMethod")}</Label>
-                <div className="grid gap-2">
-                  {methods.map((m) => (
-                    <label
-                      key={m.code}
-                      className={`flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm ${
-                        gateway === m.code
-                          ? "border-teal-700 bg-teal-50"
-                          : "border-slate-200 bg-white"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="gateway"
-                        checked={gateway === m.code}
-                        onChange={() => setGateway(m.code)}
-                      />
-                      <span>{m.name}</span>
+
+          {methods.length === 0 ? (
+            <p className="surface p-4 text-sm text-amber-800">{tb("noMethods")}</p>
+          ) : (
+            <>
+              <h2 className="font-display text-xl text-slate-900">{tb("pickMethod")}</h2>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {methods.map((m) => (
+                  <button
+                    key={m.code}
+                    type="button"
+                    onClick={() => setGateway(m.code)}
+                    className={`surface p-4 text-start transition ${
+                      gateway === m.code
+                        ? "ring-2 ring-teal-700"
+                        : "hover:border-teal-300"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="font-medium text-slate-900">{m.name}</h3>
                       {m.testMode ? (
-                        <span className="ms-auto text-[10px] uppercase text-amber-700">test</span>
+                        <span className="text-[10px] uppercase text-amber-700">test</span>
                       ) : null}
-                    </label>
-                  ))}
-                </div>
+                    </div>
+                    {m.description ? (
+                      <p className="mt-2 text-sm text-slate-600">{m.description}</p>
+                    ) : null}
+                    <div className="mt-3">
+                      <span
+                        className={`inline-flex rounded-md px-2.5 py-1 text-xs font-medium ${
+                          gateway === m.code
+                            ? "bg-teal-700 text-white"
+                            : "bg-slate-100 text-slate-700"
+                        }`}
+                      >
+                        {gateway === m.code ? tb("checkout") : tb("selectMethod")}
+                      </span>
+                    </div>
+                  </button>
+                ))}
               </div>
-            )}
-            <div className="mt-4 flex gap-2">
-              <Button onClick={() => void checkout()} disabled={!gateway}>
-                {tb("checkout")}
-              </Button>
-              {data.stripeConfigured ? (
-                <Button variant="outline" onClick={() => void portal()}>
-                  {tb("portal")}
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={() => void checkout()} disabled={!gateway}>
+                  {tb("checkout")}
                 </Button>
-              ) : null}
-            </div>
-          </div>
+                {data.stripeConfigured ? (
+                  <Button variant="outline" onClick={() => void portal()}>
+                    {tb("portal")}
+                  </Button>
+                ) : null}
+              </div>
+            </>
+          )}
         </div>
       ) : null}
 

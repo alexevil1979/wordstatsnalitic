@@ -326,7 +326,8 @@
     "pickMethod": "选择支付方式",
     "payFailed": "无法开始支付",
     "noMethods": "未启用支付方式",
-    "payMethod": "支付方式"
+    "payMethod": "支付方式",
+    "selectMethod": "选择"
   },
   "adminSaaS": {
     "shellTitle": "管理",

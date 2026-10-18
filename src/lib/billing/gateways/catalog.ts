@@ -12,6 +12,9 @@ export type ConfigField = {
 export type GatewayDef = {
   code: string;
   name: string;
+  /** Short blurb on checkout cards (same idea as fullvpnservice / wlsales pay UI). */
+  descriptionRu?: string;
+  descriptionEn?: string;
   /** Prefer for zh locale (crypto / CN-friendly). */
   cnFriendly?: boolean;
   internal?: boolean;
@@ -31,6 +34,8 @@ export const GATEWAY_CATALOG: GatewayDef[] = [
   {
     code: "yookassa",
     name: "ЮKassa",
+    descriptionRu: "Карты РФ · МИР · СБП · SberPay · ЮMoney",
+    descriptionEn: "RU cards · MIR · SBP · SberPay · YooMoney",
     fields: [
       ...commonCommission,
       { key: "shop_id", label: "Shop ID" },
@@ -41,6 +46,8 @@ export const GATEWAY_CATALOG: GatewayDef[] = [
   {
     code: "tinkoff",
     name: "Tinkoff / T-Bank",
+    descriptionRu: "Карты и Т‑Pay через Т‑Банк",
+    descriptionEn: "Cards and T‑Pay via T‑Bank",
     fields: [
       ...commonCommission,
       { key: "terminal_key", label: "Terminal key" },
@@ -50,6 +57,8 @@ export const GATEWAY_CATALOG: GatewayDef[] = [
   {
     code: "sber",
     name: "Сбербанк Эквайринг",
+    descriptionRu: "Оплата через Сбербанк / SberPay",
+    descriptionEn: "Sberbank / SberPay checkout",
     fields: [
       ...commonCommission,
       { key: "username", label: "Username" },
@@ -60,6 +69,8 @@ export const GATEWAY_CATALOG: GatewayDef[] = [
   {
     code: "robokassa",
     name: "Robokassa",
+    descriptionRu: "Карты РФ · МИР · рассрочка «Подели»",
+    descriptionEn: "RU cards · MIR · installments",
     fields: [
       ...commonCommission,
       { key: "merchant_login", label: "Merchant login" },
@@ -88,6 +99,8 @@ export const GATEWAY_CATALOG: GatewayDef[] = [
   {
     code: "stripe",
     name: "Stripe",
+    descriptionRu: "Visa/MC/Amex · Apple Pay · Google Pay · все страны кроме РФ",
+    descriptionEn: "Visa/MC/Amex · Apple Pay · Google Pay · all countries except RU",
     fields: [
       ...commonCommission,
       { key: "secret_key", label: "Secret key", type: "password", help: "Or use STRIPE_SECRET_KEY env" },
@@ -99,6 +112,8 @@ export const GATEWAY_CATALOG: GatewayDef[] = [
   {
     code: "paypal",
     name: "PayPal",
+    descriptionRu: "PayPal · международные карты",
+    descriptionEn: "PayPal · international cards",
     fields: [
       ...commonCommission,
       { key: "client_id", label: "Client ID" },
@@ -109,6 +124,8 @@ export const GATEWAY_CATALOG: GatewayDef[] = [
   {
     code: "nowpayments",
     name: "NOWPayments",
+    descriptionRu: "Крипто: Bitcoin, Ethereum, USDT и 140+ монет",
+    descriptionEn: "Crypto: Bitcoin, Ethereum, USDT and 140+ coins",
     cnFriendly: true,
     fields: [
       ...commonCommission,
@@ -209,31 +226,43 @@ export const GATEWAY_CATALOG: GatewayDef[] = [
   {
     code: "freekassa_sbp",
     name: "FreeKassa (СБП / QR)",
+    descriptionRu: "СБП / QR через FreeKassa",
+    descriptionEn: "SBP / QR via FreeKassa",
     fields: freekassaFields(44),
   },
   {
     code: "freekassa_card",
     name: "FreeKassa (карты РФ)",
+    descriptionRu: "Карты РФ через FreeKassa",
+    descriptionEn: "RU cards via FreeKassa",
     fields: freekassaFields(36),
   },
   {
     code: "freekassa_world_card",
     name: "FreeKassa (VISA / MasterCard USD)",
+    descriptionRu: "Международные карты через FreeKassa",
+    descriptionEn: "International cards via FreeKassa",
     fields: freekassaFields(32),
   },
   {
     code: "friendlypay_card",
     name: "Friendly Pay (карты)",
+    descriptionRu: "Карты через Friendly Pay",
+    descriptionEn: "Cards via Friendly Pay",
     fields: friendlyFields("card"),
   },
   {
     code: "friendlypay_sbp",
     name: "Friendly Pay (СБП)",
+    descriptionRu: "СБП через Friendly Pay",
+    descriptionEn: "SBP via Friendly Pay",
     fields: friendlyFields("sbp"),
   },
   {
     code: "betatransfer",
     name: "BetaTransfer",
+    descriptionRu: "Карты / альтернативные методы BetaTransfer",
+    descriptionEn: "Cards / alt methods via BetaTransfer",
     fields: [
       ...commonCommission,
       { key: "api_base_url", label: "API base URL", defaultValue: "https://merchant.betatransfer.io/api" },
@@ -247,6 +276,8 @@ export const GATEWAY_CATALOG: GatewayDef[] = [
   {
     code: "bybit_direct",
     name: "Bybit Direct (USDT)",
+    descriptionRu: "USDT TRC20 напрямую через Bybit",
+    descriptionEn: "USDT TRC20 via Bybit Direct",
     cnFriendly: true,
     fields: [
       ...commonCommission,
@@ -261,6 +292,8 @@ export const GATEWAY_CATALOG: GatewayDef[] = [
   {
     code: "boosty",
     name: "Boosty",
+    descriptionRu: "Оплата через Boosty",
+    descriptionEn: "Pay via Boosty",
     fields: [
       ...commonCommission,
       { key: "page_slug", label: "Boosty page slug" },

@@ -43,13 +43,38 @@ export function ensureDefaultGateways() {
     for (const f of def.fields) {
       if (f.defaultValue !== undefined) defaults[f.key] = f.defaultValue as string | number | boolean;
     }
+    // Auto-wire from env like fullvpnservice .env fallbacks
+    if (def.code === "stripe") {
+      if (process.env.STRIPE_SECRET_KEY) defaults.secret_key = process.env.STRIPE_SECRET_KEY;
+      if (process.env.STRIPE_WEBHOOK_SECRET) defaults.webhook_secret = process.env.STRIPE_WEBHOOK_SECRET;
+      if (process.env.STRIPE_PRICE_PRO) defaults.price_id = process.env.STRIPE_PRICE_PRO;
+    }
+    if (def.code === "yookassa") {
+      if (process.env.YOOKASSA_SHOP_ID) defaults.shop_id = process.env.YOOKASSA_SHOP_ID;
+      if (process.env.YOOKASSA_SECRET_KEY) defaults.secret_key = process.env.YOOKASSA_SECRET_KEY;
+    }
+    if (def.code === "robokassa") {
+      if (process.env.ROBOKASSA_LOGIN) defaults.merchant_login = process.env.ROBOKASSA_LOGIN;
+      if (process.env.ROBOKASSA_PASSWORD1) defaults.password1 = process.env.ROBOKASSA_PASSWORD1;
+      if (process.env.ROBOKASSA_PASSWORD2) defaults.password2 = process.env.ROBOKASSA_PASSWORD2;
+    }
+    if (def.code === "nowpayments" && process.env.NOWPAYMENTS_API_KEY) {
+      defaults.api_key = process.env.NOWPAYMENTS_API_KEY;
+      if (process.env.NOWPAYMENTS_IPN_SECRET) defaults.ipn_secret = process.env.NOWPAYMENTS_IPN_SECRET;
+    }
+    const hasKeys = Object.keys(defaults).some(
+      (k) =>
+        !["extra_commission_percent", "mode", "pay_currency", "api_base_url"].includes(k) &&
+        defaults[k] !== "" &&
+        defaults[k] != null
+    );
     try {
       db.insert(paymentGateways)
         .values({
           id: nanoid(),
           code: def.code,
           name: def.name,
-          enabled: 0,
+          enabled: hasKeys && ["stripe", "yookassa", "robokassa", "nowpayments"].includes(def.code) ? 1 : 0,
           testMode: 1,
           minAmountRub: 0,
           configJson: JSON.stringify(defaults),

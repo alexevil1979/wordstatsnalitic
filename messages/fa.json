@@ -326,7 +326,8 @@
     "pickMethod": "روش پرداخت را انتخاب کنید",
     "payFailed": "پرداخت شروع نشد",
     "noMethods": "روش پرداختی فعال نیست",
-    "payMethod": "روش پرداخت"
+    "payMethod": "روش پرداخت",
+    "selectMethod": "انتخاب"
   },
   "adminSaaS": {
     "shellTitle": "مدیریت",

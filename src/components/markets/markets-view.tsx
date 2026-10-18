@@ -111,11 +111,6 @@ export function MarketsView() {
         }),
       });
       const json = await res.json();
-      if (res.status === 401) {
-        toast.error(t("loginForSphere"));
-        window.location.href = `/${locale}/auth/login`;
-        return;
-      }
       if (!res.ok) throw new Error(json.error || "Failed");
       setSphereResult(json.data);
       toast.success(t("sphereReady"));

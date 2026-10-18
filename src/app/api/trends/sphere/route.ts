@@ -19,19 +19,23 @@ const bodySchema = z.object({
   queryLimit: z.number().int().min(1).max(4).optional(),
 });
 
+/**
+ * Public Markets refresh: Google Trends for a sphere×country.
+ * Login optional — guests get data; logged-in users count toward daily caps.
+ */
 export async function POST(req: NextRequest) {
   try {
     const session = await auth();
-    const userId = session?.user?.id;
-    if (!userId) {
-      return NextResponse.json({ error: "login_required" }, { status: 401 });
+    const userId = session?.user?.id ?? null;
+    let user = null as ReturnType<typeof getUserById>;
+    if (userId) {
+      user = getUserById(userId);
+      if (user && user.status === "active") {
+        assertWithinLimit(userId, "research");
+      } else {
+        user = null;
+      }
     }
-    const user = getUserById(userId);
-    if (!user || user.status !== "active") {
-      return NextResponse.json({ error: "login_required" }, { status: 401 });
-    }
-
-    assertWithinLimit(userId, "research");
 
     const body = bodySchema.parse(await req.json());
     if (!getSphere(body.sphereId)) {
@@ -45,18 +49,17 @@ export async function POST(req: NextRequest) {
       force: body.force ?? true,
       queryLimit: body.queryLimit ?? 3,
       delayMs: 3000,
-      userId,
+      userId: user?.id ?? null,
     });
 
-    recordUsage(userId, "research");
+    if (user) {
+      recordUsage(user.id, "research");
+    }
+
     return NextResponse.json({ data });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Sphere analysis failed";
-    const status = message.includes("limit")
-      ? 429
-      : message.includes("login")
-        ? 401
-        : 400;
+    const status = message.includes("limit") ? 429 : 400;
     return NextResponse.json({ error: message }, { status });
   }
 }

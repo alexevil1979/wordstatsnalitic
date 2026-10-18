@@ -326,7 +326,8 @@
     "pickMethod": "Ödeme yöntemi seçin",
     "payFailed": "Ödeme başlatılamadı",
     "noMethods": "Ödeme yöntemi yok",
-    "payMethod": "Ödeme yöntemi"
+    "payMethod": "Ödeme yöntemi",
+    "selectMethod": "Seç"
   },
   "adminSaaS": {
     "shellTitle": "Yönetim",

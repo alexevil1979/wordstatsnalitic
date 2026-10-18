@@ -325,8 +325,9 @@
     "cancel": "Checkout canceled",
     "pickMethod": "Choose a payment method",
     "payFailed": "Payment could not be started",
-    "noMethods": "No payment methods enabled — ask admin.",
-    "payMethod": "Payment method"
+    "noMethods": "No payment methods enabled — admin turns on gateways in Admin → Gateways (same as fullvpnservice).",
+    "payMethod": "Payment method",
+    "selectMethod": "Select"
   },
   "adminSaaS": {
     "shellTitle": "Admin",

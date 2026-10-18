@@ -5,7 +5,8 @@ import { payments } from "@/db/schema";
 import { getUserById } from "@/lib/auth/users";
 import { getPlan } from "@/lib/billing/plans";
 import { getDriver } from "./manager";
-import { getGateway, listEnabledGateways } from "./store";
+import { getGatewayDef } from "./catalog";
+import { ensureDefaultGateways, getGateway, listEnabledGateways } from "./store";
 import type { PaymentRow } from "./types";
 import { yookassaNeedsTestFlag } from "./drivers/yookassa";
 
@@ -102,9 +103,11 @@ export async function startProCheckout(userId: string, gatewayCode: string, loca
 }
 
 export function publicMethods(locale?: string) {
+  ensureDefaultGateways();
   const plan = getPlan("pro");
   const amountRub = plan.priceRub || 2490;
   const preferCn = (locale || "").toLowerCase().startsWith("zh");
+  const loc = (locale || "ru").toLowerCase();
   let list = listEnabledGateways(amountRub);
   if (preferCn) {
     const cn = list.filter((g) =>
@@ -112,10 +115,18 @@ export function publicMethods(locale?: string) {
     );
     if (cn.length) list = [...cn, ...list.filter((g) => !cn.includes(g))];
   }
-  return list.map((g) => ({
-    code: g.code,
-    name: g.name,
-    minAmountRub: g.minAmountRub,
-    testMode: g.testMode,
-  }));
+  return list.map((g) => {
+    const def = getGatewayDef(g.code);
+    const description =
+      loc.startsWith("ru")
+        ? def?.descriptionRu || def?.descriptionEn || ""
+        : def?.descriptionEn || def?.descriptionRu || "";
+    return {
+      code: g.code,
+      name: g.name,
+      description,
+      minAmountRub: g.minAmountRub,
+      testMode: g.testMode,
+    };
+  });
 }
