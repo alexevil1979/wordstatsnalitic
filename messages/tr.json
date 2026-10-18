@@ -39,14 +39,14 @@
     "disclaimer": "Catalog may mix expert_estimate rows and live Google Trends (relative interest 0–100, not absolute volume)."
   },
   "markets": {
-    "title": "IT ve dijital ürün pazar analitiği",
-    "subtitle": "Tüm nişler ve büyük ülkeler için hazır özet. Seçim gerekmez — veri otomatik toplanır.",
-    "disclaimer": "Google Trends = relative interest 0–100, not absolute volume. Full refresh across niches×countries runs in the background (cron or button) and takes time due to Google rate limits.",
+    "title": "Services & goods market analytics",
+    "subtitle": "Pick a sphere from the top 100 and click Update to recalculate live Google Trends demand. With no selection — shared IT/digital overview.",
+    "disclaimer": "Google Trends = relative interest 0–100, not absolute volume. Sphere recalculation takes ~10–20s due to Google rate limits.",
     "reload": "Ekranı yenile",
     "downloadXml": "Analitik XML indir",
     "xmlDownloaded": "XML saved",
     "refreshAll": "Tüm Trends yenile",
-    "refreshing": "Starting…",
+    "refreshing": "Calculating…",
     "refreshStarted": "Background refresh started. Later click Reload screen.",
     "error": "Yükleme başarısız",
     "kpiRows": "Clusters",
@@ -76,7 +76,21 @@
     "colTopQuery": "Top query",
     "colSource": "Source",
     "colQuery": "Query",
-    "loginForXml": "XML indirmek için giriş yapın"
+    "loginForXml": "XML indirmek için giriş yapın",
+    "recalcSphere": "Update",
+    "sphereReady": "Sphere results updated",
+    "sphereHint": "Selected: {name}. Click Update to recalculate.",
+    "sphereEmpty": "No data yet. Click Update to fetch Trends for {country}.",
+    "sphereRisingEmpty": "No rising queries in the Trends response.",
+    "country": "Country",
+    "kpiAvgInterest": "Avg interest",
+    "kpiPeak": "Peak",
+    "kpiScore": "Score",
+    "kpiRising": "Rising",
+    "seedRanked": "Sphere query clusters",
+    "topRelated": "Top related",
+    "colSignals": "Signals",
+    "loginForSphere": "Sign in to recalculate a sphere"
   },
   "research": {
     "title": "Custom query (advanced)",
@@ -377,8 +391,8 @@
     "finalSub": "No niche selection required — or filter by sphere when you know the direction."
   },
   "spheres": {
-    "label": "Analytics type (sphere)",
-    "all": "All spheres",
+    "label": "Service / goods sphere",
+    "all": "All spheres (overview)",
     "placeholder": "Choose a sphere",
     "search": "Search spheres…",
     "empty": "Nothing found",

@@ -64,10 +64,16 @@ export async function analyzeNiche(params: {
   upsertCatalog?: boolean;
   queryLimit?: number;
   delayMs?: number;
+  /** Override watchlist seeds (used for general spheres). */
+  seedQueries?: string[];
+  userId?: string | null;
 }): Promise<NicheAnalysis> {
   const country = params.country.toUpperCase();
   const timeframe = params.timeframe ?? "today 12-m";
-  const seeds = queriesForNiche(params.nicheId, params.queryLimit ?? 5);
+  const seeds =
+    params.seedQueries && params.seedQueries.length > 0
+      ? params.seedQueries.slice(0, params.queryLimit ?? 5)
+      : queriesForNiche(params.nicheId, params.queryLimit ?? 5);
   if (seeds.length === 0) {
     throw new Error(`No watchlist queries for niche: ${params.nicheId}`);
   }
@@ -81,6 +87,7 @@ export async function analyzeNiche(params: {
         country,
         timeframe,
         force: params.force,
+        userId: params.userId,
       });
       queries.push({ query, ok: true, research });
       if (params.upsertCatalog) {

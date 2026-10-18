@@ -1,156 +1,186 @@
-/** ~100 in-demand analytics spheres for searchable select (IT / digital / business). */
+/** Top-100 in-demand spheres of services & goods (not IT-only). */
 
 export type SphereGroup =
-  | "ai"
-  | "dev"
-  | "growth"
-  | "ops"
-  | "digital_products"
-  | "commerce"
-  | "content"
-  | "vertical";
+  | "home"
+  | "beauty"
+  | "health"
+  | "education"
+  | "food"
+  | "auto"
+  | "retail"
+  | "business"
+  | "finance"
+  | "leisure"
+  | "logistics"
+  | "personal"
+  | "digital";
 
 export type Sphere = {
   id: string;
   group: SphereGroup;
   nameRu: string;
   nameEn: string;
-  /** Extra terms for search (ru/en). */
   aliases?: string[];
-  /** Map to existing niche id when present in DB/watchlist. */
-  nicheId?: string;
+  /** Seed queries for Google Trends (EN + local where useful). */
+  queries: string[];
 };
 
 export const SPHERE_GROUPS: Record<
   SphereGroup,
   { nameRu: string; nameEn: string }
 > = {
-  ai: { nameRu: "AI и автоматизация", nameEn: "AI & automation" },
-  dev: { nameRu: "Разработка и продукт", nameEn: "Dev & product" },
-  growth: { nameRu: "Маркетинг и рост", nameEn: "Growth & marketing" },
-  ops: { nameRu: "Инфра и безопасность", nameEn: "Infra & security" },
-  digital_products: { nameRu: "Цифровые продукты", nameEn: "Digital products" },
-  commerce: { nameRu: "Коммерция и продажи", nameEn: "Commerce & sales" },
-  content: { nameRu: "Контент и медиа", nameEn: "Content & media" },
-  vertical: { nameRu: "Отраслевые ниши", nameEn: "Vertical niches" },
+  home: { nameRu: "Дом и ремонт", nameEn: "Home & repair" },
+  beauty: { nameRu: "Красота и уход", nameEn: "Beauty & care" },
+  health: { nameRu: "Здоровье и wellness", nameEn: "Health & wellness" },
+  education: { nameRu: "Образование", nameEn: "Education" },
+  food: { nameRu: "Еда и рестораны", nameEn: "Food & restaurants" },
+  auto: { nameRu: "Авто и транспорт", nameEn: "Auto & transport" },
+  retail: { nameRu: "Товары и ритейл", nameEn: "Goods & retail" },
+  business: { nameRu: "Бизнес-услуги", nameEn: "Business services" },
+  finance: { nameRu: "Финансы и страхование", nameEn: "Finance & insurance" },
+  leisure: { nameRu: "Досуг и туризм", nameEn: "Leisure & travel" },
+  logistics: { nameRu: "Логистика и доставка", nameEn: "Logistics & delivery" },
+  personal: { nameRu: "Личные услуги", nameEn: "Personal services" },
+  digital: { nameRu: "Цифровые и IT", nameEn: "Digital & IT" },
 };
 
+function s(
+  id: string,
+  group: SphereGroup,
+  nameRu: string,
+  nameEn: string,
+  queries: string[],
+  aliases?: string[]
+): Sphere {
+  return { id, group, nameRu, nameEn, queries, aliases };
+}
+
 export const SPHERES: Sphere[] = [
-  // AI (12)
-  { id: "ai-agents", group: "ai", nameRu: "AI-агенты для бизнеса", nameEn: "AI agents for business", nicheId: "ai-agents", aliases: ["агенты", "gpt", "llm"] },
-  { id: "ai-chatbots", group: "ai", nameRu: "AI-чатботы и поддержка", nameEn: "AI chatbots & support", aliases: ["чатбот", "support bot"] },
-  { id: "ai-voice", group: "ai", nameRu: "Голосовые AI-ассистенты", nameEn: "Voice AI assistants", aliases: ["voicebot", "телефония"] },
-  { id: "ai-content", group: "ai", nameRu: "AI-контент и копирайт", nameEn: "AI content & copywriting", aliases: ["копирайтинг", "генерация текста"] },
-  { id: "ai-image-video", group: "ai", nameRu: "AI-изображения и видео", nameEn: "AI image & video", aliases: ["midjourney", "runway", "sora"] },
-  { id: "ai-coding", group: "ai", nameRu: "AI-coding и code review", nameEn: "AI coding & review", aliases: ["copilot", "cursor"] },
-  { id: "ai-analytics", group: "ai", nameRu: "AI-аналитика данных", nameEn: "AI data analytics", aliases: ["bi", "прогнозы"] },
-  { id: "rag-knowledge", group: "ai", nameRu: "RAG и базы знаний", nameEn: "RAG & knowledge bases", aliases: ["vector", "embeddings"] },
-  { id: "prompt-engineering", group: "ai", nameRu: "Промпт-инжиниринг", nameEn: "Prompt engineering", nicheId: "prompts", aliases: ["промпты"] },
-  { id: "ai-automation-agency", group: "ai", nameRu: "AI-automation агентства", nameEn: "AI automation agencies", aliases: ["n8n", "make"] },
-  { id: "computer-vision", group: "ai", nameRu: "Computer vision", nameEn: "Computer vision", aliases: ["cv", "распознавание"] },
-  { id: "ai-hr", group: "ai", nameRu: "AI в HR и рекрутинге", nameEn: "AI for HR & recruiting", aliases: ["рекрутинг", "ats"] },
+  // home (10)
+  s("cleaning", "home", "Клининг квартир и офисов", "House & office cleaning", ["house cleaning service", "office cleaning company", "клининг квартир"], ["уборка"]),
+  s("renovation", "home", "Ремонт квартир под ключ", "Apartment renovation", ["home renovation contractor", "apartment remodeling", "ремонт квартир под ключ"], ["отделка"]),
+  s("plumbing", "home", "Сантехника", "Plumbing services", ["plumber near me", "emergency plumber", "сантехник вызов"], ["трубы"]),
+  s("electrical", "home", "Электрика", "Electrical services", ["electrician near me", "electrical repair service", "электрик на дом"], ["проводка"]),
+  s("furniture", "home", "Мебель на заказ", "Custom furniture", ["custom furniture maker", "bespoke furniture", "мебель на заказ"], ["шкафы"]),
+  s("hvac", "home", "Климат и вентиляция", "HVAC & ventilation", ["hvac repair", "air conditioning installation", "кондиционеры установка"], ["кондиционер"]),
+  s("pest-control", "home", "Дезинсекция / пест-контроль", "Pest control", ["pest control service", "termite treatment", "дезинсекция квартир"], ["тараканы"]),
+  s("landscaping", "home", "Ландшафт и сад", "Landscaping & gardening", ["landscaping company", "lawn care service", "ландшафтный дизайн"], ["сад"]),
+  s("moving", "home", "Переезды", "Moving services", ["moving company", "local movers", "квартирный переезд"], ["грузчики"]),
+  s("smart-home", "home", "Умный дом", "Smart home install", ["smart home installation", "home automation installer", "умный дом установка"], ["iot home"]),
 
-  // Dev (14)
-  { id: "web-dev", group: "dev", nameRu: "Веб-разработка под ключ", nameEn: "Full-stack web development", nicheId: "web-dev", aliases: ["next.js", "react"] },
-  { id: "mobile-apps", group: "dev", nameRu: "Мобильные приложения", nameEn: "Mobile app development", aliases: ["ios", "android", "flutter"] },
-  { id: "saas-dev", group: "dev", nameRu: "Разработка SaaS", nameEn: "SaaS product development", aliases: ["b2b saas"] },
-  { id: "no-code", group: "dev", nameRu: "No-code / low-code", nameEn: "No-code / low-code", nicheId: "no-code", aliases: ["bubble", "webflow", "flutterflow"] },
-  { id: "ui-ux", group: "dev", nameRu: "UI/UX и продуктовый дизайн", nameEn: "UI/UX & product design", nicheId: "ui-ux", aliases: ["figma", "дизайн"] },
-  { id: "design-systems", group: "dev", nameRu: "Дизайн-системы", nameEn: "Design systems", aliases: ["ui kit", "токены"] },
-  { id: "api-integrations", group: "dev", nameRu: "API и интеграции", nameEn: "API & integrations", aliases: ["webhook", "middleware"] },
-  { id: "mvp-startup", group: "dev", nameRu: "MVP для стартапов", nameEn: "Startup MVP builds", aliases: ["прототип"] },
-  { id: "legacy-modernization", group: "dev", nameRu: "Модернизация legacy", nameEn: "Legacy modernization", aliases: ["миграция"] },
-  { id: "qa-testing", group: "dev", nameRu: "QA и автотесты", nameEn: "QA & test automation", aliases: ["selenium", "playwright"] },
-  { id: "blockchain-web3", group: "dev", nameRu: "Blockchain / Web3", nameEn: "Blockchain / Web3", aliases: ["smart contracts", "nft"] },
-  { id: "game-dev", group: "dev", nameRu: "Game development", nameEn: "Game development", aliases: ["unity", "unreal"] },
-  { id: "wordpress-dev", group: "dev", nameRu: "WordPress / CMS", nameEn: "WordPress / CMS", aliases: ["woocommerce"] },
-  { id: "shopify-dev", group: "dev", nameRu: "Shopify / e‑com платформы", nameEn: "Shopify & e‑com platforms", aliases: ["магазин"] },
+  // beauty (8)
+  s("hair-salon", "beauty", "Парикмахерские / салоны", "Hair salons", ["hair salon near me", "hair coloring salon", "парикмахерская рядом"], ["стрижка"]),
+  s("nail-salon", "beauty", "Маникюр и педикюр", "Nail salons", ["nail salon near me", "gel manicure", "маникюр педикюр"], ["ногти"]),
+  s("barbershop", "beauty", "Барбершопы", "Barbershops", ["barbershop near me", "mens haircut", "барбершоп"], ["борода"]),
+  s("cosmetology", "beauty", "Косметология", "Cosmetology clinics", ["cosmetic clinic", "facial treatment salon", "косметология лица"], ["чистка лица"]),
+  s("lashes-brows", "beauty", "Ресницы и брови", "Lashes & brows", ["eyelash extensions", "brow lamination", "наращивание ресниц"], ["брови"]),
+  s("tattoo-piercing", "beauty", "Тату и пирсинг", "Tattoo & piercing", ["tattoo studio near me", "piercing shop", "тату салон"], ["татуировка"]),
+  s("spa-massage", "beauty", "SPA и массаж", "SPA & massage", ["spa massage near me", "thai massage", "массаж спа"], ["релакс"]),
+  s("beauty-products", "beauty", "Косметика и уход (товары)", "Beauty products retail", ["skincare products store", "organic cosmetics shop", "магазин косметики"], ["уход"]),
 
-  // Growth (14)
-  { id: "seo-marketing", group: "growth", nameRu: "SEO и performance", nameEn: "SEO & performance marketing", nicheId: "seo-marketing", aliases: ["google ads", "реклама"] },
-  { id: "content-marketing", group: "growth", nameRu: "Контент-маркетинг", nameEn: "Content marketing", aliases: ["блог", "smm"] },
-  { id: "email-crm", group: "growth", nameRu: "Email / CRM-маркетинг", nameEn: "Email & CRM marketing", aliases: ["retention", "lifecycle"] },
-  { id: "influencer", group: "growth", nameRu: "Influencer / UGC", nameEn: "Influencer & UGC", aliases: ["блогеры"] },
-  { id: "affiliate", group: "growth", nameRu: "Партнёрский маркетинг", nameEn: "Affiliate marketing", aliases: ["cpa", "рефералка"] },
-  { id: "cro", group: "growth", nameRu: "CRO и лендинги", nameEn: "CRO & landing pages", aliases: ["конверсия"] },
-  { id: "product-led", group: "growth", nameRu: "Product-led growth", nameEn: "Product-led growth", aliases: ["plg", "onboarding"] },
-  { id: "branding", group: "growth", nameRu: "Брендинг и айдентика", nameEn: "Branding & identity", aliases: ["логотип"] },
-  { id: "pr-comms", group: "growth", nameRu: "PR и коммуникации", nameEn: "PR & communications", aliases: ["медиа"] },
-  { id: "market-research", group: "growth", nameRu: "Маркетинговые исследования", nameEn: "Market research", aliases: ["опросы", "спрос"] },
-  { id: "local-seo", group: "growth", nameRu: "Local SEO / карты", nameEn: "Local SEO & maps", aliases: ["gmb", "гео"] },
-  { id: "aso", group: "growth", nameRu: "ASO приложений", nameEn: "App store optimization", aliases: ["app store"] },
-  { id: "telegram-growth", group: "growth", nameRu: "Продвижение в Telegram", nameEn: "Telegram growth", aliases: ["каналы", "боты"] },
-  { id: "short-video-ads", group: "growth", nameRu: "Short-form video ads", nameEn: "Short-form video ads", aliases: ["tiktok", "reels", "shorts"] },
+  // health (8)
+  s("dental", "health", "Стоматология", "Dental clinics", ["dental clinic near me", "teeth whitening cost", "стоматология рядом"], ["зубы"]),
+  s("private-clinic", "health", "Частные клиники", "Private medical clinics", ["private clinic appointment", "walk in clinic", "частная клиника"], ["врач"]),
+  s("physiotherapy", "health", "Физиотерапия / ЛФК", "Physiotherapy", ["physiotherapy near me", "physical therapy clinic", "физиотерапия"], ["реабилитация"]),
+  s("optics", "health", "Оптика и очки", "Optics & eyewear", ["eyeglasses store", "contact lenses shop", "салон оптики"], ["линзы"]),
+  s("pharmacy", "health", "Аптеки", "Pharmacies", ["pharmacy near me", "online pharmacy", "аптека рядом"], ["лекарства"]),
+  s("vet", "health", "Ветеринария", "Veterinary clinics", ["vet clinic near me", "emergency vet", "ветеринарная клиника"], ["животные"]),
+  s("fitness", "health", "Фитнес-клубы", "Fitness clubs", ["gym membership", "fitness club near me", "фитнес клуб"], ["зал"]),
+  s("nutrition", "health", "Нутрициология / диеты", "Nutrition coaching", ["nutritionist near me", "diet meal plan", "нутрициолог"], ["похудение"]),
 
-  // Ops (12)
-  { id: "devops", group: "ops", nameRu: "DevOps / SRE / FinOps", nameEn: "DevOps / SRE / FinOps", nicheId: "devops", aliases: ["kubernetes", "ci/cd"] },
-  { id: "cybersecurity", group: "ops", nameRu: "Кибербезопасность", nameEn: "Cybersecurity", nicheId: "cybersecurity", aliases: ["pentest", "soc", "vciso"] },
-  { id: "cloud-migration", group: "ops", nameRu: "Облачная миграция", nameEn: "Cloud migration", aliases: ["aws", "gcp", "azure"] },
-  { id: "data-engineering", group: "ops", nameRu: "Data engineering", nameEn: "Data engineering", aliases: ["etl", "warehouse"] },
-  { id: "mlops", group: "ops", nameRu: "MLOps", nameEn: "MLOps", aliases: ["модели", "деплой ml"] },
-  { id: "observability", group: "ops", nameRu: "Мониторинг и observability", nameEn: "Monitoring & observability", aliases: ["prometheus", "grafana"] },
-  { id: "it-outsourcing", group: "ops", nameRu: "IT-аутсорсинг", nameEn: "IT outsourcing", aliases: ["staff augmentation"] },
-  { id: "helpdesk", group: "ops", nameRu: "Helpdesk / ITSM", nameEn: "Helpdesk / ITSM", aliases: ["service desk"] },
-  { id: "compliance", group: "ops", nameRu: "Compliance (GDPR, 152-ФЗ)", nameEn: "Compliance (GDPR & local)", aliases: ["персональные данные"] },
-  { id: "backup-dr", group: "ops", nameRu: "Backup и disaster recovery", nameEn: "Backup & DR", aliases: ["резервное копирование"] },
-  { id: "network-security", group: "ops", nameRu: "Сетевая безопасность / VPN", nameEn: "Network security & VPN", aliases: ["firewall", "zero trust"] },
-  { id: "iam", group: "ops", nameRu: "IAM и SSO", nameEn: "IAM & SSO", aliases: ["okta", "auth"] },
+  // education (8)
+  s("tutoring", "education", "Репетиторы", "Private tutoring", ["math tutor near me", "online tutoring service", "репетитор математика"], ["ЕГЭ"]),
+  s("language-school", "education", "Языковые школы", "Language schools", ["english language school", "online english course", "курсы английского"], ["иностранные языки"]),
+  s("driving-school", "education", "Автошколы", "Driving schools", ["driving school near me", "learn to drive", "автошкола"], ["права"]),
+  s("kids-activities", "education", "Детские кружки", "Kids activities & clubs", ["kids after school activities", "children art classes", "детские кружки"], ["секции"]),
+  s("music-lessons", "education", "Музыкальные школы", "Music lessons", ["piano lessons near me", "guitar teacher", "уроки музыки"], ["фортепиано"]),
+  s("online-courses", "education", "Онлайн-курсы", "Online courses", ["online course platform", "best online courses", "онлайн курсы"], ["обучение"]),
+  s("corporate-training", "education", "Корпоративное обучение", "Corporate training", ["corporate training company", "employee training program", "корпоративное обучение"], ["тренинги"]),
+  s("exam-prep", "education", "Подготовка к экзаменам", "Exam preparation", ["sat prep course", "ielts preparation", "подготовка к экзаменам"], ["тесты"]),
 
-  // Digital products (14)
-  { id: "micro-saas", group: "digital_products", nameRu: "Micro-SaaS", nameEn: "Micro-SaaS", nicheId: "micro-saas", aliases: ["wrapper", "b2b tool"] },
-  { id: "notion-systems", group: "digital_products", nameRu: "Notion / OS-шаблоны", nameEn: "Notion systems & templates", nicheId: "notion-systems", aliases: ["шаблоны notion"] },
-  { id: "courses", group: "digital_products", nameRu: "Онлайн-курсы", nameEn: "Online courses", nicheId: "courses", aliases: ["инфобиз", "обучение"] },
-  { id: "plugins", group: "digital_products", nameRu: "Плагины и расширения", nameEn: "Plugins & extensions", nicheId: "plugins", aliases: ["chrome", "wordpress plugin"] },
-  { id: "ui-kits", group: "digital_products", nameRu: "UI-киты и шаблоны", nameEn: "UI kits & templates", nicheId: "ui-kits", aliases: ["figma kit", "dashboard"] },
-  { id: "make-zapier", group: "digital_products", nameRu: "Шаблоны Make / Zapier / n8n", nameEn: "Make / Zapier / n8n templates", nicheId: "make-zapier", aliases: ["автоматизация"] },
-  { id: "stock-assets", group: "digital_products", nameRu: "Стоки: фото, иконки, 3D", nameEn: "Stock assets (photo, icons, 3D)", aliases: ["сток"] },
-  { id: "fonts-graphics", group: "digital_products", nameRu: "Шрифты и графика", nameEn: "Fonts & graphics packs", aliases: ["typedesign"] },
-  { id: "spreadsheet-tools", group: "digital_products", nameRu: "Таблицы и калькуляторы", nameEn: "Spreadsheets & calculators", aliases: ["excel", "google sheets"] },
-  { id: "bot-templates", group: "digital_products", nameRu: "Шаблоны Telegram/Discord ботов", nameEn: "Bot templates", aliases: ["телеграм бот"] },
-  { id: "prompt-packs", group: "digital_products", nameRu: "Пакеты промптов", nameEn: "Prompt packs", aliases: ["chatgpt packs"] },
-  { id: "newsletter-products", group: "digital_products", nameRu: "Платные рассылки / media", nameEn: "Paid newsletters & media", aliases: ["substack"] },
-  { id: "digital-downloads", group: "digital_products", nameRu: "Digital downloads / gumroad", nameEn: "Digital downloads", aliases: ["gumroad", "цифровые товары"] },
-  { id: "white-label-saas", group: "digital_products", nameRu: "White-label SaaS", nameEn: "White-label SaaS", aliases: ["реселл"] },
+  // food (8)
+  s("restaurants", "food", "Рестораны", "Restaurants", ["restaurant near me", "fine dining restaurant", "ресторан рядом"], ["кафе"]),
+  s("coffee-shops", "food", "Кофейни", "Coffee shops", ["coffee shop near me", "specialty coffee", "кофейня рядом"], ["кофе"]),
+  s("delivery-food", "food", "Доставка еды", "Food delivery", ["food delivery service", "order food online", "доставка еды"], ["еда на дом"]),
+  s("catering", "food", "Кейтеринг", "Catering", ["catering service", "event catering", "кейтеринг на мероприятие"], ["банкет"]),
+  s("bakeries", "food", "Пекарни и кондитерские", "Bakeries & pastry", ["bakery near me", "custom cake shop", "пекарня кондитерская"], ["торты"]),
+  s("meal-kits", "food", "Готовые рационы / meal kits", "Meal kits & diet boxes", ["meal kit delivery", "healthy meal delivery", "доставка рационов"], ["пп еда"]),
+  s("grocery", "food", "Продуктовый ритейл", "Grocery retail", ["grocery delivery", "supermarket online", "доставка продуктов"], ["супермаркет"]),
+  s("alcohol-retail", "food", "Алкогольный ритейл", "Alcohol retail", ["wine shop near me", "liquor store delivery", "винный магазин"], ["вино"]),
 
-  // Commerce (12)
-  { id: "ecommerce-ops", group: "commerce", nameRu: "E‑commerce операции", nameEn: "E‑commerce operations", aliases: ["магазин", "fulfillment"] },
-  { id: "marketplace-sellers", group: "commerce", nameRu: "Маркетплейсы (WB/Ozon/Amazon)", nameEn: "Marketplace selling", aliases: ["wildberries", "ozon"] },
-  { id: "dropshipping", group: "commerce", nameRu: "Дропшиппинг", nameEn: "Dropshipping", aliases: ["поставщики"] },
-  { id: "pricing-tools", group: "commerce", nameRu: "Ценообразование и мониторинг", nameEn: "Pricing & monitoring tools", aliases: ["парсинг цен"] },
-  { id: "crm-sales", group: "commerce", nameRu: "CRM и продажи B2B", nameEn: "CRM & B2B sales", aliases: ["amocrm", "bitrix"] },
-  { id: "payment-fintech", group: "commerce", nameRu: "Платежи и финтех-сервисы", nameEn: "Payments & fintech", aliases: ["эквайринг"] },
-  { id: "subscription-billing", group: "commerce", nameRu: "Подписки и биллинг", nameEn: "Subscriptions & billing", aliases: ["recurring"] },
-  { id: "customer-success", group: "commerce", nameRu: "Customer success", nameEn: "Customer success", aliases: ["churn", "retention"] },
-  { id: "lead-gen", group: "commerce", nameRu: "Лидогенерация B2B", nameEn: "B2B lead generation", aliases: ["outbound", "холодные"] },
-  { id: "sales-enablement", group: "commerce", nameRu: "Sales enablement", nameEn: "Sales enablement", aliases: ["презентации", "плейбуки"] },
-  { id: "loyalty", group: "commerce", nameRu: "Программы лояльности", nameEn: "Loyalty programs", aliases: ["бонусы"] },
-  { id: "franchise-saas", group: "commerce", nameRu: "Франшизы digital", nameEn: "Digital franchises", aliases: ["франшиза"] },
+  // auto (7)
+  s("auto-repair", "auto", "Автосервис", "Auto repair shops", ["auto repair near me", "car mechanic", "автосервис рядом"], ["СТО"]),
+  s("car-wash", "auto", "Автомойки", "Car washes", ["car wash near me", "detailing car wash", "автомойка"], ["детейлинг"]),
+  s("tire-service", "auto", "Шиномонтаж", "Tire services", ["tire shop near me", "tire change service", "шиномонтаж"], ["резина"]),
+  s("car-rental", "auto", "Аренда авто", "Car rental", ["car rental near me", "rent a car cheap", "аренда авто"], ["прокат"]),
+  s("ride-hailing", "auto", "Такси / ride-hailing", "Taxi & ride-hailing", ["taxi app", "ride hailing service", "вызвать такси"], ["uber"]),
+  s("ev-charging", "auto", "Зарядки EV", "EV charging", ["ev charging station", "electric car charger install", "зарядка электромобиля"], ["электромобиль"]),
+  s("auto-parts", "auto", "Автозапчасти", "Auto parts retail", ["auto parts store", "car spare parts online", "автозапчасти"], ["запчасти"]),
 
-  // Content (10)
-  { id: "youtube-production", group: "content", nameRu: "YouTube / видеопродакшн", nameEn: "YouTube & video production", aliases: ["монтаж"] },
-  { id: "podcasting", group: "content", nameRu: "Подкасты", nameEn: "Podcasting", aliases: ["аудио"] },
-  { id: "newsletter-media", group: "content", nameRu: "Медиа и ньюслеттеры", nameEn: "Media & newsletters", aliases: ["редакция"] },
-  { id: "ugc-creators", group: "content", nameRu: "UGC-креаторы", nameEn: "UGC creators", aliases: ["креаторы"] },
-  { id: "localization", group: "content", nameRu: "Локализация и перевод", nameEn: "Localization & translation", aliases: ["i18n", "перевод"] },
-  { id: "documentation", group: "content", nameRu: "Техдок и knowledge base", nameEn: "Tech docs & knowledge base", aliases: ["документация"] },
-  { id: "community", group: "content", nameRu: "Community management", nameEn: "Community management", aliases: ["сообщество"] },
-  { id: "education-content", group: "content", nameRu: "Образовательный контент", nameEn: "Educational content", aliases: ["методички"] },
-  { id: "stock-video", group: "content", nameRu: "Stock video / motion", nameEn: "Stock video & motion", aliases: ["моушн"] },
-  { id: "ai-avatars", group: "content", nameRu: "AI-аватары и синтез речи", nameEn: "AI avatars & TTS", aliases: ["heygen", "elevenlabs"] },
+  // retail (9)
+  s("fashion", "retail", "Одежда и fashion", "Fashion retail", ["clothing store online", "fashion boutique", "магазин одежды"], ["мода"]),
+  s("shoes", "retail", "Обувь", "Footwear retail", ["shoe store near me", "sneakers shop", "магазин обуви"], ["кроссовки"]),
+  s("electronics", "retail", "Электроника", "Electronics retail", ["electronics store", "buy smartphone online", "магазин электроники"], ["гаджеты"]),
+  s("home-goods", "retail", "Товары для дома", "Home goods", ["home goods store", "home decor shop", "товары для дома"], ["декор"]),
+  s("kids-goods", "retail", "Детские товары", "Kids & baby goods", ["baby store near me", "kids toys shop", "детские товары"], ["игрушки"]),
+  s("pet-goods", "retail", "Зоотовары", "Pet supplies", ["pet store near me", "dog food delivery", "зоомагазин"], ["корм"]),
+  s("sporting-goods", "retail", "Спорттовары", "Sporting goods", ["sporting goods store", "running shoes shop", "спортивный магазин"], ["спорт"]),
+  s("marketplace-sellers", "retail", "Продажи на маркетплейсах", "Marketplace selling", ["sell on amazon", "wildberries seller", "продажа на маркетплейсах"], ["ozon", "wb"]),
+  s("secondhand", "retail", "Секонд-хенд / ресейл", "Resale & thrift", ["thrift store near me", "resale marketplace", "секонд хенд"], ["комиссионка"]),
 
-  // Vertical (12) → total 100
-  { id: "healthtech", group: "vertical", nameRu: "HealthTech / телемед", nameEn: "HealthTech & telemedicine", aliases: ["медицина"] },
-  { id: "edtech", group: "vertical", nameRu: "EdTech", nameEn: "EdTech", aliases: ["образование"] },
-  { id: "fintech-vertical", group: "vertical", nameRu: "FinTech продукты", nameEn: "FinTech products", aliases: ["банки", "кошельки"] },
-  { id: "proptech", group: "vertical", nameRu: "PropTech / недвижимость", nameEn: "PropTech", aliases: ["недвижимость"] },
-  { id: "legaltech", group: "vertical", nameRu: "LegalTech", nameEn: "LegalTech", aliases: ["юристы"] },
-  { id: "hrtech", group: "vertical", nameRu: "HRTech", nameEn: "HRTech", aliases: ["кадры"] },
-  { id: "logistics-tech", group: "vertical", nameRu: "LogisticsTech", nameEn: "LogisticsTech", aliases: ["логистика"] },
-  { id: "agritech", group: "vertical", nameRu: "AgriTech", nameEn: "AgriTech", aliases: ["агро"] },
-  { id: "traveltech", group: "vertical", nameRu: "TravelTech", nameEn: "TravelTech", aliases: ["туризм"] },
-  { id: "foodtech", group: "vertical", nameRu: "FoodTech / dark kitchen", nameEn: "FoodTech", aliases: ["доставка еды"] },
-  { id: "cleantech", group: "vertical", nameRu: "CleanTech / ESG", nameEn: "CleanTech & ESG", aliases: ["экология"] },
-  { id: "govtech", group: "vertical", nameRu: "GovTech / B2G", nameEn: "GovTech / B2G", aliases: ["госзаказ"] },
+  // business (9)
+  s("accounting", "business", "Бухгалтерия и учёт", "Accounting services", ["accounting firm", "bookkeeping service", "бухгалтерские услуги"], ["налоги"]),
+  s("legal-b2b", "business", "Юридические услуги B2B", "B2B legal services", ["business lawyer", "corporate legal services", "юридические услуги бизнесу"], ["договоры"]),
+  s("hr-recruiting", "business", "HR и рекрутинг", "HR & recruiting", ["recruitment agency", "hiring freelancers", "рекрутинговое агентство"], ["подбор персонала"]),
+  s("marketing-agency", "business", "Маркетинговые агентства", "Marketing agencies", ["marketing agency", "digital marketing company", "маркетинговое агентство"], ["реклама"]),
+  s("pr-agency", "business", "PR-агентства", "PR agencies", ["pr agency", "public relations firm", "пиар агентство"], ["медиа"]),
+  s("consulting", "business", "Бизнес-консалтинг", "Business consulting", ["business consulting firm", "management consultant", "бизнес консалтинг"], ["стратегия"]),
+  s("printing", "business", "Полиграфия и печать", "Printing services", ["printing company", "business cards printing", "полиграфия печать"], ["типография"]),
+  s("coworking", "business", "Коворкинги", "Coworking spaces", ["coworking space near me", "shared office rental", "коворкинг"], ["офис"]),
+  s("event-agency", "business", "Ивент-агентства", "Event agencies", ["event planning company", "corporate event agency", "организация мероприятий"], ["мероприятия"]),
+
+  // finance (7)
+  s("insurance", "finance", "Страхование", "Insurance", ["car insurance quote", "health insurance plans", "страхование осаго"], ["полис"]),
+  s("banking", "finance", "Банковские услуги", "Banking services", ["open bank account", "business bank account", "открыть счет в банке"], ["банк"]),
+  s("microfinance", "finance", "Микрозаймы / кредиты", "Loans & microfinance", ["personal loan online", "payday loan", "микрозайм онлайн"], ["кредит"]),
+  s("investment", "finance", "Инвестиции и брокеры", "Investing & brokers", ["stock broker account", "investing app", "брокерский счет"], ["акции"]),
+  s("crypto-exchange", "finance", "Криптобиржи / обмен", "Crypto exchanges", ["crypto exchange", "buy bitcoin", "криптобиржа"], ["биткоин"]),
+  s("accounting-software", "finance", "Финсофт / учёт", "Accounting software", ["accounting software", "invoicing software", "программа для бухгалтерии"], ["1с"]),
+  s("pawnshop", "finance", "Ломбарды", "Pawn shops", ["pawn shop near me", "gold pawn", "ломбард рядом"], ["залог"]),
+
+  // leisure (8)
+  s("hotels", "leisure", "Отели и гостиницы", "Hotels", ["hotel booking", "hotels near me", "забронировать отель"], ["гостиница"]),
+  s("travel-agency", "leisure", "Турагентства", "Travel agencies", ["travel agency", "tour package deals", "турагентство"], ["туры"]),
+  s("air-tickets", "leisure", "Авиабилеты", "Flight tickets", ["cheap flights", "book flight tickets", "авиабилеты дешево"], ["перелёты"]),
+  s("cinema", "leisure", "Кинотеатры", "Cinemas", ["movies near me", "cinema tickets", "кинотеатр афиша"], ["фильм"]),
+  s("gaming", "leisure", "Гейминг / клубы", "Gaming & game clubs", ["gaming cafe", "pc gaming club", "компьютерный клуб"], ["киберспорт"]),
+  s("nightlife", "leisure", "Бары и ночная жизнь", "Bars & nightlife", ["bars near me", "nightclub tickets", "бар рядом"], ["клуб"]),
+  s("sports-events", "leisure", "Спортсобытия / билеты", "Sports events tickets", ["sports tickets", "football tickets", "билеты на спорт"], ["матч"]),
+  s("tourism-local", "leisure", "Экскурсии и локальный туризм", "Local tours & experiences", ["city tours", "guided walking tour", "экскурсии по городу"], ["гид"]),
+
+  // logistics (6)
+  s("courier", "logistics", "Курьерская доставка", "Courier delivery", ["courier service", "same day delivery", "курьерская доставка"], ["доставка"]),
+  s("freight", "logistics", "Грузоперевозки", "Freight & trucking", ["freight shipping company", "truck transport", "грузоперевозки"], ["фура"]),
+  s("warehouse", "logistics", "Склады и фулфилмент", "Warehousing & fulfillment", ["warehouse storage rental", "fulfillment center", "склад аренда"], ["фулфилмент"]),
+  s("last-mile", "logistics", "Last-mile логистика", "Last-mile logistics", ["last mile delivery", "parcel delivery service", "доставка посылок"], ["посылки"]),
+  s("customs", "logistics", "Таможня и ВЭД", "Customs & trade", ["customs brokerage", "import export agent", "таможенное оформление"], ["импорт"]),
+  s("packaging", "logistics", "Упаковка и тара", "Packaging supplies", ["packaging supplies wholesale", "shipping boxes", "упаковочные материалы"], ["коробки"]),
+
+  // personal (7)
+  s("legal-personal", "personal", "Юристы для людей", "Personal legal help", ["lawyer near me", "divorce lawyer", "юрист консультация"], ["адвокат"]),
+  s("notary", "personal", "Нотариусы", "Notary services", ["notary near me", "notary public", "нотариус рядом"], ["доверенность"]),
+  s("real-estate", "personal", "Недвижимость / риелторы", "Real estate agents", ["real estate agent", "buy apartment", "риелтор квартиры"], ["продажа квартир"]),
+  s("nanny", "personal", "Няни и сиделки", "Nannies & caregivers", ["nanny service", "elderly caregiver", "няня на дом"], ["сиделка"]),
+  s("wedding", "personal", "Свадебные услуги", "Wedding services", ["wedding planner", "wedding photography", "организация свадьбы"], ["свадьба"]),
+  s("photo-video", "personal", "Фото и видеосъёмка", "Photo & video services", ["photographer near me", "event videographer", "фотограф на мероприятие"], ["съёмка"]),
+  s("funeral", "personal", "Ритуальные услуги", "Funeral services", ["funeral home", "funeral services", "ритуальные услуги"], ["похоронное бюро"]),
+
+  // digital (5) — minority of catalog
+  s("web-dev", "digital", "Веб-разработка", "Web development", ["web development agency", "website design company", "разработка сайта"], ["сайт"]),
+  s("seo-marketing", "digital", "SEO и digital-маркетинг", "SEO & digital marketing", ["seo agency", "google ads management", "seo продвижение"], ["реклама"]),
+  s("mobile-apps", "digital", "Мобильные приложения", "Mobile apps", ["mobile app development", "ios android app", "разработка приложений"], ["app"]),
+  s("cybersecurity", "digital", "Кибербезопасность", "Cybersecurity", ["cybersecurity company", "penetration testing", "кибербезопасность услуги"], ["защита"]),
+  s("ai-agents", "digital", "AI-агенты и автоматизация", "AI agents & automation", ["ai agent for business", "ai automation agency", "ai агент для бизнеса"], ["chatgpt business"]),
 ];
 
 export function sphereLabel(s: Sphere, locale: string): string {
@@ -164,17 +194,17 @@ export function groupLabel(group: SphereGroup, locale: string): string {
 export function searchSpheres(query: string, locale = "en"): Sphere[] {
   const q = query.trim().toLowerCase();
   if (!q) return SPHERES;
-  const primary = (s: Sphere) =>
-    (locale === "ru" ? s.nameRu : s.nameEn).toLowerCase();
-  return SPHERES.filter((s) => {
+  const primary = (item: Sphere) =>
+    (locale === "ru" ? item.nameRu : item.nameEn).toLowerCase();
+  return SPHERES.filter((item) => {
     const hay = [
-      s.id,
-      s.nameRu,
-      s.nameEn,
-      s.nicheId || "",
-      ...(s.aliases || []),
-      groupLabel(s.group, "ru"),
-      groupLabel(s.group, "en"),
+      item.id,
+      item.nameRu,
+      item.nameEn,
+      ...item.queries,
+      ...(item.aliases || []),
+      groupLabel(item.group, "ru"),
+      groupLabel(item.group, "en"),
     ]
       .join(" ")
       .toLowerCase();
@@ -187,8 +217,13 @@ export function searchSpheres(query: string, locale = "en"): Sphere[] {
 }
 
 export function getSphere(id: string): Sphere | undefined {
-  return SPHERES.find((s) => s.id === id);
+  return SPHERES.find((item) => item.id === id);
 }
 
-/** Ensure catalog length stays at 100 for product copy. */
+export function queriesForSphere(id: string, limit = 4): string[] {
+  const sphere = getSphere(id);
+  if (!sphere) return [];
+  return sphere.queries.slice(0, limit);
+}
+
 export const SPHERES_COUNT = SPHERES.length;

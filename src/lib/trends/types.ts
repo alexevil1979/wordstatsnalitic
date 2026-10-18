@@ -48,3 +48,9 @@ export type NicheAnalysisClient = {
     summaryEn: string;
   };
 };
+
+export type SphereAnalysisClient = NicheAnalysisClient & {
+  sphereId: string;
+  nameRu: string;
+  nameEn: string;
+};
