@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,15 +15,20 @@ import { formatVolume } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 import type { MarketOverview } from "@/lib/trends/overview-types";
 import { Download } from "lucide-react";
+import { SphereSelect } from "@/components/spheres/sphere-select";
+import { getSphere } from "@/data/spheres";
 
 export function MarketsView() {
   const t = useTranslations("markets");
+  const ts = useTranslations("spheres");
   const locale = useLocale();
+  const sp = useSearchParams();
   const { data: session } = useSession();
   const isAdmin = session?.user?.role === "admin";
   const [data, setData] = useState<MarketOverview | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [sphere, setSphere] = useState(sp.get("sphere") || "");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -42,6 +48,20 @@ export function MarketsView() {
     load();
   }, [load]);
 
+  useEffect(() => {
+    const fromUrl = sp.get("sphere") || "";
+    if (fromUrl !== sphere) setSphere(fromUrl);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sp]);
+
+  function onSphereChange(id: string) {
+    setSphere(id);
+    const url = new URL(window.location.href);
+    if (id) url.searchParams.set("sphere", id);
+    else url.searchParams.delete("sphere");
+    window.history.replaceState({}, "", url.toString());
+  }
+
   async function startRefresh() {
     setRefreshing(true);
     try {
@@ -56,18 +76,38 @@ export function MarketsView() {
     }
   }
 
+  const sphereMeta = sphere ? getSphere(sphere) : null;
+  const nicheKey = sphereMeta?.nicheId || sphereMeta?.id || "";
+
+  const filtered = useMemo(() => {
+    if (!data || !nicheKey) return data;
+    const byNiche = data.byNiche.filter(
+      (n) => n.nicheId === nicheKey || n.nicheId.includes(nicheKey)
+    );
+    const matrix = data.matrix.filter(
+      (c) => c.nicheId === nicheKey || c.nicheId.includes(nicheKey)
+    );
+    const topLaunch = data.topLaunch.filter(
+      (o) => o.nicheId === nicheKey || o.nicheId.includes(nicheKey)
+    );
+    const topGrowing = data.topGrowing.filter(
+      (o) => o.nicheId === nicheKey || o.nicheId.includes(nicheKey)
+    );
+    return { ...data, byNiche, matrix, topLaunch, topGrowing };
+  }, [data, nicheKey]);
+
   if (loading && !data) {
     return <div className="py-16 text-center text-slate-500">…</div>;
   }
-  if (!data) return null;
+  if (!filtered) return null;
 
-  const itNiches = data.byNiche.filter((n) => n.category === "it_services");
-  const digNiches = data.byNiche.filter((n) => n.category === "digital_products");
+  const itNiches = filtered.byNiche.filter((n) => n.category === "it_services");
+  const digNiches = filtered.byNiche.filter((n) => n.category === "digital_products");
 
   return (
     <div className="space-y-8">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-        <div>
+        <div className="min-w-0 flex-1">
           <h1 className="font-display text-3xl tracking-tight text-slate-900 md:text-4xl">
             {t("title")}
           </h1>
@@ -75,6 +115,12 @@ export function MarketsView() {
             {t("subtitle")}
           </p>
           <p className="mt-2 text-xs text-amber-800/90">{t("disclaimer")}</p>
+          <div className="mt-4 max-w-xl">
+            <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-500">
+              {ts("label")}
+            </label>
+            <SphereSelect value={sphere} onChange={onSphereChange} allowAll />
+          </div>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button
@@ -120,18 +166,18 @@ export function MarketsView() {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Kpi label={t("kpiRows")} value={data.totals.opportunities} />
-        <Kpi label={t("kpiTrends")} value={data.totals.trendsRows} />
-        <Kpi label={t("kpiNiches")} value={data.totals.niches} />
-        <Kpi label={t("kpiCountries")} value={data.totals.countries} />
+        <Kpi label={t("kpiRows")} value={filtered.totals.opportunities} />
+        <Kpi label={t("kpiTrends")} value={filtered.totals.trendsRows} />
+        <Kpi label={t("kpiNiches")} value={filtered.byNiche.length || filtered.totals.niches} />
+        <Kpi label={t("kpiCountries")} value={filtered.totals.countries} />
       </div>
 
-      {data.lastRefresh && (
+      {filtered.lastRefresh && (
         <p className="text-xs text-slate-500">
-          {t("lastRefresh")}: {data.lastRefresh.status} · {data.lastRefresh.done}/
-          {data.lastRefresh.total}
-          {data.lastRefresh.finishedAt
-            ? ` · ${new Date(data.lastRefresh.finishedAt).toLocaleString(locale)}`
+          {t("lastRefresh")}: {filtered.lastRefresh.status} · {filtered.lastRefresh.done}/
+          {filtered.lastRefresh.total}
+          {filtered.lastRefresh.finishedAt
+            ? ` · ${new Date(filtered.lastRefresh.finishedAt).toLocaleString(locale)}`
             : ""}
         </p>
       )}
@@ -150,7 +196,7 @@ export function MarketsView() {
               </tr>
             </thead>
             <tbody>
-              {data.byCountry.map((row) => (
+              {filtered.byCountry.map((row) => (
                 <tr key={row.countryCode}>
                   <td className="font-medium">
                     {locale === "ru" ? row.countryNameRu : row.countryNameEn}
@@ -209,7 +255,7 @@ export function MarketsView() {
               </tr>
             </thead>
             <tbody>
-              {data.matrix.slice(0, 80).map((cell) => (
+              {filtered.matrix.slice(0, 80).map((cell) => (
                 <tr key={`${cell.nicheId}-${cell.countryCode}`}>
                   <td>
                     {locale === "ru" ? cell.nicheNameRu : cell.nicheNameEn}
@@ -238,13 +284,13 @@ export function MarketsView() {
       <div className="grid gap-6 lg:grid-cols-2">
         <OppList
           title={t("topLaunch")}
-          rows={data.topLaunch}
+          rows={filtered.topLaunch}
           locale={locale}
           empty={t("empty")}
         />
         <OppList
           title={t("topGrowing")}
-          rows={data.topGrowing}
+          rows={filtered.topGrowing}
           locale={locale}
           empty={t("empty")}
         />
@@ -263,14 +309,14 @@ export function MarketsView() {
               </tr>
             </thead>
             <tbody>
-              {data.risingQueries.length === 0 ? (
+              {filtered.risingQueries.length === 0 ? (
                 <tr>
                   <td colSpan={3} className="text-slate-500">
                     {t("risingEmpty")}
                   </td>
                 </tr>
               ) : (
-                data.risingQueries.map((r) => (
+                filtered.risingQueries.map((r) => (
                   <tr key={`${r.country}-${r.query}`}>
                     <td>{r.query}</td>
                     <td>{r.country}</td>

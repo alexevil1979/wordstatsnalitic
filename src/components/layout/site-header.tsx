@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { locales, localeLabels, type AppLocale } from "@/i18n/routing";
 
 const links = [
+  { href: "/", key: "product" as const },
   { href: "/markets", key: "markets" as const },
   { href: "/opportunities", key: "opportunities" as const },
   { href: "/insights", key: "insights" as const },
@@ -36,7 +37,10 @@ export function SiteHeader() {
           </Link>
           <nav className="hidden items-center gap-1 md:flex">
             {links.map((l) => {
-              const active = pathname.startsWith(l.href);
+              const active =
+                l.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(l.href);
               return (
                 <Link
                   key={l.href}

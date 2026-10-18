@@ -15,7 +15,8 @@
     "login": "Giriş",
     "logout": "Çıkış",
     "register": "Kayıt",
-    "billing": "Ödeme"
+    "billing": "Ödeme",
+    "product": "Product"
   },
   "brand": {
     "name": "Wordstat",
@@ -344,5 +345,43 @@
     "planSaved": "Plan saved",
     "gateways": "Ödeme geçitleri",
     "priceRub": "Fiyat (RUB)"
+  },
+  "landing": {
+    "tagline": "Market Demand Intelligence",
+    "headline": "See where demand is growing — before you build",
+    "sub": "Automatic analytics across IT services and digital products. Bring your own API keys; we provide the research tool.",
+    "sphereLabel": "Analytics sphere",
+    "sphereHint": "{n} in-demand spheres — search by name",
+    "ctaMarkets": "Open markets",
+    "ctaStart": "Create account",
+    "capsTitle": "What you get",
+    "capsSub": "One product for demand signals, personal research, and BYOK providers.",
+    "cap1Title": "Markets overview",
+    "cap1Body": "All major countries × niches in one screen: scores, launch-ready clusters, rising queries from Trends.",
+    "cap2Title": "Sphere focus",
+    "cap2Body": "Pick a sphere from 100 options with search, then drill into the matching analytics.",
+    "cap3Title": "Your keys, your quota",
+    "cap3Body": "Pro unlocks SerpAPI / DataForSEO / Ahrefs from your accounts. We do not resell API credits.",
+    "cap4Title": "Cabinet & limits",
+    "cap4Body": "Usage meters, encrypted keys, XML export, and billing in one personal cabinet.",
+    "howTitle": "How it works",
+    "step1": "Browse Markets or choose a sphere on the landing page.",
+    "step2": "Free uses Google Trends. Pro attaches your paid provider keys in Cabinet.",
+    "step3": "Export XML, save research history, iterate on niches with demand.",
+    "freeTitle": "Free",
+    "freeBody": "Shared Markets · Google Trends tool · daily limits",
+    "proTitle": "Pro",
+    "proBody": "Your API keys · higher limits · personal history. Keys are not included.",
+    "proCta": "Open cabinet keys",
+    "finalTitle": "Start with the overview",
+    "finalSub": "No niche selection required — or filter by sphere when you know the direction."
+  },
+  "spheres": {
+    "label": "Analytics type (sphere)",
+    "all": "All spheres",
+    "placeholder": "Choose a sphere",
+    "search": "Search spheres…",
+    "empty": "Nothing found",
+    "count": "{n} spheres"
   }
 }

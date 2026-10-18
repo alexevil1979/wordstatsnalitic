@@ -1,11 +1,12 @@
-import { redirect } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
+import { LandingView } from "@/components/landing/landing-view";
 
-/** Home → full market analytics (all niches × major countries). */
 export default async function HomePage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  redirect(`/${locale}/markets`);
+  setRequestLocale(locale);
+  return <LandingView />;
 }
