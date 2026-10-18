@@ -10,8 +10,10 @@ import {
   TrendBadge,
 } from "@/components/status-badges";
 import { formatVolume } from "@/lib/utils";
+import { downloadMarketXml } from "@/lib/markets-export";
 import { Link } from "@/i18n/navigation";
 import type { MarketOverview } from "@/lib/trends/overview-types";
+import { Download } from "lucide-react";
 
 export function MarketsView() {
   const t = useTranslations("markets");
@@ -73,6 +75,18 @@ export function MarketsView() {
           <p className="mt-2 text-xs text-amber-800/90">{t("disclaimer")}</p>
         </div>
         <div className="flex flex-wrap gap-2">
+          <Button
+            variant="outline"
+            onClick={() => {
+              const stamp = new Date().toISOString().slice(0, 10);
+              downloadMarketXml(data, locale, `wordstat-markets-${stamp}.xml`);
+              toast.success(t("xmlDownloaded"));
+            }}
+            disabled={!data}
+          >
+            <Download className="mr-1.5 h-4 w-4" />
+            {t("downloadXml")}
+          </Button>
           <Button variant="outline" onClick={load} disabled={loading}>
             {t("reload")}
           </Button>

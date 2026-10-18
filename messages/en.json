@@ -37,6 +37,8 @@
     "subtitle": "Ready overview across all niches and major countries. No selection needed — data is collected automatically.",
     "disclaimer": "Google Trends = relative interest 0–100, not absolute volume. Full refresh across niches×countries runs in the background (cron or button) and takes time due to Google rate limits.",
     "reload": "Reload screen",
+    "downloadXml": "Download analytics XML",
+    "xmlDownloaded": "XML saved",
     "refreshAll": "Rebuild Trends for all niches",
     "refreshing": "Starting…",
     "refreshStarted": "Background refresh started. Later click Reload screen.",
